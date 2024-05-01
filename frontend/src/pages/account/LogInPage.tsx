@@ -41,27 +41,19 @@ export default function LogInPage() {
   function handleErrors() {
     errorMessage.splice(0, errorMessage.length);
 
-    addError(name.trim().length < 3, "The name must be more than 3 characters long.");
-    addError(password.length < 4, "The password must be more than 4 characters long.");
-    addError(password.includes(" "), "The password must not contain spaces.");
+    if (name.trim().length < 3) errorMessage.push("The name must be more than 3 characters long.");
+    if (password.length < 4) errorMessage.push("The password must be more than 4 characters long.");
+    if (password.includes(" ")) errorMessage.push("The password must not contain spaces.");
 
     setErrorMessage([...errorMessage]);
     hasError = errorMessage.length > 0;
-  }
-
-  function addError(condition : boolean, message : string) {
-    if (condition) {
-      errorMessage.push(message);
-    }
   }
 
   return (
     <>
       <Form onSubmit={handleSubmit} method="get">
 
-      <h3 style={{marginBottom: "30px"}}>
-        Login
-      </h3>
+      <h3 style={{marginBottom: "30px"}}>Login</h3>
 
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
@@ -75,9 +67,7 @@ export default function LogInPage() {
         {errorMessage.map(error => (<li key={error}>{error}</li>))}
       </Card> }
 
-      <Button variant="primary" type="submit" style={{width: "110px", marginTop: "20px"}}>
-        Log in
-      </Button>
+      <Button variant="primary" type="submit" style={{width: "110px", marginTop: "20px"}}>Log in</Button>
 
       </Form>
     </>
