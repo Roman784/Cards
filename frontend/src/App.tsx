@@ -7,7 +7,7 @@ import ProfilePage from "./pages/account/ProfilePage";
 import AddModulePage from "./pages/modules/AddModulePage";
 import ModulesPage from "./pages/modules/ModulesPage";
 
-import Header from "./components/Header/Header";
+import Header from "./components/header/Header";
 
 import "./App.css";
 
