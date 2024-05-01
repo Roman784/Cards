@@ -1,106 +1,83 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCard, setTitle, setAccess } from '../../store/editableModuleSlice';
+
+import ModuleType from './ModuleType';
+import CardType from './CardType';
+
+import { EditableCard } from './EditableCard';
+import "./Modules.css";
+
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-import "./Modules.css";
-import { useState } from 'react';
-
-function EditableCard({term, definition, cardChanged, remove} : {term : string, definition : string, cardChanged : any, remove : any}) {
-  const [form, setForm] = useState({
-    term: term,
-    definition: definition
-  });
-
-  const handleTermChanged = (event : any) => {
-    event.preventDefault();
-    setForm(prev => ({
-      ...prev,
-      term: event.target.value
-    }))
-
-    cardChanged(form);
-  }
-
-  const handleDefinitionChanged = (event : any) => {
-    event.preventDefault();
-    setForm(prev => ({
-      ...prev,
-      definition: event.target.value
-    }))
-
-    cardChanged(form);
-  }
-
-
-  return( 
-    <Card body className="editable-card">
-      <Form.Control type="text" placeholder="Term" value={form.term} onChange={handleTermChanged} />
-      <p/>
-      <Form.Control type="text" placeholder="Definition" value={form.definition} onChange={handleDefinitionChanged} />
-      <p/>
-      <Button variant="outline-danger" onClick={remove}>Remove</Button>
-    </Card>
-  );
-}
+import { cardsData } from "../../temp_data/cardsData";
 
 export default function AddModulesPage() {
-  const [access, setAccess] = useState(0);
-  const [cards, setCards] = useState([{
-    term: "1",
-    definition: ""
-  },
-  {
-    term: "2",
-    definition: ""
-  },
-  {
-    term: "3",
-    definition: ""
-  }]);
+  const title = useSelector<any, string>(state => state.editableModule.title);
+  const access = useSelector<any, number>(state => state.editableModule.access);
+  const cards = useSelector<any, CardType[]>(state => state.editableModule.cards);
 
-  function addCard() {
-    setCards(prev => ([
-      ...prev,
-      {
-        term: "",
-        definition: ""
-      }
-    ]));
+  const dispatch = useDispatch<any>();
+
+  useEffect(() => {
+    loadCards();
+  }, []);
+
+  function loadCards() {
+    for (let i = 0; i < cardsData.length; i++) {
+      dispatch(addCard({
+        id: i,
+        term: cardsData[i].term,
+        definition: cardsData[i].definition
+      }));
+    }
   }
 
-  function removeCard(cardToRemove : any) {
-    console.log(cardToRemove);
-    setCards(cards.filter((card) => card !== cardToRemove));
-  }
+  const addNewCard = () => {
+    let id: number = cards.length > 0 ? cards[cards.length - 1].id + 1 : 0;
 
-  function cardChanged(card : any) {
+    dispatch(addCard({
+      id: id,
+      term: "",
+      definition: ""
+    }));
+  };
 
-  }
+  const saveModule = () => {
+    let module: ModuleType = {
+      title: title,
+      access: access,
+      cards: cards
+    }
+
+    console.log("Save module: ", module)
+  };
 
   return (
     <>
       <h3 style={{marginBottom: "30px"}}>Add module</h3>
 
       <InputGroup className="mb-3 titile-form" size="lg">
-        <Form.Control aria-label="Text input with dropdown button" type="text" placeholder="Title" />
+        <Form.Control aria-label="Text input with dropdown button" type="text" placeholder="Title" value={title} onChange={(e) => dispatch(setTitle(e.target.value))} />
 
         <DropdownButton variant="outline-primary" title={access === 0 ? "Private" : "Public"} id="input-group-dropdown-2" align="end">
-          <Dropdown.Item onClick={() => setAccess(0)}>Private</Dropdown.Item>
-          <Dropdown.Item onClick={() => setAccess(1)}>Public</Dropdown.Item>
+          <Dropdown.Item onClick={() => dispatch(setAccess(0))}>Private</Dropdown.Item>
+          <Dropdown.Item onClick={() => dispatch(setAccess(1))}>Public</Dropdown.Item>
         </DropdownButton>
       </InputGroup>
       
-      {cards.map(card => (
-        <EditableCard key={cards.indexOf(card)} term={card.term} definition={card.definition} cardChanged={() => cardChanged(card)} remove={() => removeCard(card)} />
+      {cards.length > 0 && cards.map(card => (
+        <EditableCard key={card.id} id={card.id} term={card.term} definition={card.definition} />
       ))}
 
       <div style={{marginBottom: "300px"}}>
-        <Button variant="outline-primary" onClick={() => addCard()} style={{ width: "150px", marginBottom: "1rem"}}>Add card</Button>
-        <Button variant="primary" style={{width: "100%", marginLeft: "auto"}}>Save module</Button>
+        <Button variant="outline-primary" onClick={addNewCard} style={{ width: "150px", marginBottom: "1rem"}}>Add card</Button>
+        <Button variant="primary" onClick={saveModule} style={{width: "100%", marginLeft: "auto"}}>Save module</Button>
       </div>
     </>
   );
