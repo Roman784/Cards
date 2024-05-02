@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import CardType from "../Types/CardType";
 
-const initState = {
+const initialState = {
     title: <string>"",
     access: <number>0,
     cards: <CardType[]>[]
@@ -9,7 +9,7 @@ const initState = {
 
 const editableModuleSlice = createSlice({
     name: 'editableModule',
-    initialState: initState,
+    initialState: initialState,
     reducers: {
         setTitle(state, action) {
             state.title = action.payload;
@@ -42,9 +42,9 @@ const editableModuleSlice = createSlice({
             state.cards = state.cards.filter(card => card.id !== id);
         },
         reset(state) {
-            state.title = initState.title;
-            state.access = initState.access;
-            state.cards = initState.cards;
+            state.title = initialState.title;
+            state.access = initialState.access;
+            state.cards = initialState.cards;
         }
     }
 });

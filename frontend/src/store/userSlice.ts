@@ -17,8 +17,10 @@ const UserSlice = createSlice({
 
             state.isLogin = state.name !== "" && state.accessToken !== "";
         },
-        logOut(state, action) {
-
+        logOut(state) {
+            state.isLogin = initialState.isLogin;
+            state.name = initialState.name;
+            state.accessToken = initialState.accessToken;
         }
     }
 });
