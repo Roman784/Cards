@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
 import "./authForm.css";
 
 export default function LogInPage() {
@@ -76,9 +76,9 @@ export default function LogInPage() {
           <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </Form.Group>
 
-        {errorMessage.length > 0 && <Card body border="danger">
+        {errorMessage.length > 0 && <Alert key="danger" variant="danger">
           {errorMessage.map(error => (<li key={error}>{error}</li>))}
-        </Card> }
+        </Alert> }
 
         <div className="btn-container">
           <Button className="submit-btn" variant="primary" type="submit">Log in</Button>

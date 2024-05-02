@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Card from 'react-bootstrap/Card';
+import Alert from 'react-bootstrap/Alert';
 import "./authForm.css";
 
 import { users } from "../../temp_data/users";
@@ -73,9 +73,9 @@ export default function SignUpPage() {
           <Form.Control type="password" placeholder="Confirm password" name="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
         </Form.Group>
 
-        {errorMessage.length > 0 && <Card body>
+        {errorMessage.length > 0 && <Alert key="danger" variant="danger">
           {errorMessage.map(error => (<li key={error}>{error}</li>))}
-        </Card> }
+        </Alert> }
 
         <div className="btn-container">
           <Button className="submit-btn" variant="primary" type="submit">Sign up</Button>
