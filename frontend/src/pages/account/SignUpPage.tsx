@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../store/userSlice';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import "./authForm.css";
-
-import { users } from "../../temp_data/users";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -17,31 +17,42 @@ export default function SignUpPage() {
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   let hasError : boolean = false;
 
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const handleSubmit = (event : any) => {
+  const handleSubmit = async (event : any) => {
     event.preventDefault();
 
+    // Проверка формы на ошибки.
     handleErrors();
+    if (hasError) return;
 
-    if (hasError) {
-      console.log("Error")
-      return;
+    // Отправляем запрос на сервер с данными формы.
+    const response = await fetch("https://localhost:7010/signup", {
+      method: "PUT",
+      headers: { "Accept": "application/json", "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name,
+        password: password
+      })
+    });
+
+    console.log(response);
+
+    if (response.ok === true) { // Сохраняем данные пользователя в redux.
+      const data = await response.json();
+      dispatch(logIn(data));
+      navigate("/");
     }
-
-    SignUp();
+    if (response.status === 409) { // Выводим сообщение об ошибке авторизации.
+      const data = await response.json();
+      setErrorMessage([...errorMessage, data.message]);
+    }
+    else { // Очистка формы.
+      setName("");
+      setPassword("");
+    }
   };
-
-  async function SignUp() {
-    for (const user of users) {
-      if (name.trim() === user.name.trim()) {
-        console.log("User already exists");
-        return;
-      }
-    }
-
-    console.log("Sign up");
-  }
 
   function handleErrors() {
     errorMessage.splice(0, errorMessage.length);

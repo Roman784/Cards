@@ -39,11 +39,11 @@ namespace Backend.Controllers
         {
             try
             {
-                // Проверяем на уникальность пользователя.
+                // Проверяем пользователя на уникальность.
                 User? existingUser = UsersContext.GetUser(registrationData.Name);
 
                 if (existingUser != null)
-                    return Conflict("Пользователь с таким именем уже существует.");
+                    return Conflict(new { message = "User already exists." });
 
                 // Добавляем новго пользователя в БД.
                 User newUser = UsersContext.AddUser(registrationData.Name, registrationData.Password);
