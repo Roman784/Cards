@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import "./authForm.css";
 
 export default function LogInPage() {
   const [name, setName] = useState<string>("");
@@ -65,22 +66,24 @@ export default function LogInPage() {
     <>
       <Form onSubmit={handleSubmit} method="get">
 
-      <h3 style={{marginBottom: "30px"}}>Login</h3>
+        <h3 className="title">Login</h3>
 
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+        </Form.Group>
 
-      {errorMessage.length > 0 && <Card body border="danger">
-        {errorMessage.map(error => (<li key={error}>{error}</li>))}
-      </Card> }
+        {errorMessage.length > 0 && <Card body border="danger">
+          {errorMessage.map(error => (<li key={error}>{error}</li>))}
+        </Card> }
 
-      <Button variant="primary" type="submit" style={{width: "110px", marginTop: "20px"}}>Log in</Button>
-
+        <div className="btn-container">
+          <Button className="submit-btn" variant="primary" type="submit">Log in</Button>
+          <Button className="link-btn" variant="link" onClick={() => navigate("/signup")}>Sign up</Button>
+        </div>
       </Form>
     </>
   );

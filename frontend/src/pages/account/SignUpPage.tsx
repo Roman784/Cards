@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import "./authForm.css";
 
 import { users } from "../../temp_data/users";
 
@@ -14,6 +16,8 @@ export default function SignUpPage() {
 
   const [errorMessage, setErrorMessage] = useState<string[]>([]);
   let hasError : boolean = false;
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event : any) => {
     event.preventDefault();
@@ -55,26 +59,28 @@ export default function SignUpPage() {
     <>
       <Form onSubmit={handleSubmit} method="get">
 
-      <h3 style={{marginBottom: "30px"}}>Signup</h3>
+        <h3 className="title">Signup</h3>
 
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
+        </Form.Group>
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Control type="password" placeholder="Confirm password" name="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
-      </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Control type="password" placeholder="Confirm password" name="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
+        </Form.Group>
 
-      {errorMessage.length > 0 && <Card body>
-        {errorMessage.map(error => (<li key={error}>{error}</li>))}
-      </Card> }
+        {errorMessage.length > 0 && <Card body>
+          {errorMessage.map(error => (<li key={error}>{error}</li>))}
+        </Card> }
 
-      <Button variant="primary" type="submit" style={{width: "110px", marginTop: "20px"}}>Sign up</Button>
-
+        <div className="btn-container">
+          <Button className="submit-btn" variant="primary" type="submit">Sign up</Button>
+          <Button className="link-btn" variant="link" onClick={() => navigate("/login")}>Log in</Button>
+        </div>
       </Form>
     </>
   );
