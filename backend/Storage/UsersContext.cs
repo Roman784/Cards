@@ -56,6 +56,13 @@ namespace Backend.Storage
                     select module).ToList();
         }
 
+        public static List<Module> GetUserModules(int userId)
+        {
+            return (from module in Modules
+                    where module.UserId == userId
+                    select module).ToList();
+        }
+
         public static Module? GetModule(int userId)
         {
             return Modules.FirstOrDefault(module => module.UserId == userId);

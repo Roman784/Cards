@@ -36,9 +36,7 @@ export default function SignUpPage() {
         password: password
       })
     });
-
-    console.log(response);
-
+    
     if (response.ok === true) { // Сохраняем данные пользователя в redux.
       const data = await response.json();
       dispatch(logIn(data));

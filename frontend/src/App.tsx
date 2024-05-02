@@ -5,7 +5,8 @@ import LogInPage from "./pages/account/LogInPage";
 import SignUpPage from "./pages/account/SignUpPage";
 import ProfilePage from "./pages/account/ProfilePage"; 
 import AddModulePage from "./pages/modules/AddModulePage";
-import ModulesPage from "./pages/modules/ModulesPage";
+import MyModulesPage from "./pages/modules/MyModulesPage";
+import SavedModulesPage from "./pages/modules/SavedModulesPage";
 
 import Header from "./components/header/Header";
 import "./App.css";
@@ -24,10 +25,10 @@ export default function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
-          <Route path="/modules" element={<ModulesPage />} />
+          <Route path="/modules" element={<BoardPage />} />
           <Route path="/modules/add" element={<AddModulePage />} />
-          <Route path="/modules/my" element={<ModulesPage />} />
-          <Route path="/modules/saved" element={<ModulesPage />} />
+          <Route path="/modules/my" element={<MyModulesPage />} />
+          <Route path="/modules/saved" element={<SavedModulesPage />} />
           
           <Route path="*" element={<BoardPage />} />
         </Routes>
