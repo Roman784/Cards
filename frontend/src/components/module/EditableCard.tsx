@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { updateCard, removeCard } from '../store/editableModuleSlice';
+import { updateCard, removeCard } from '../../store/editableModuleSlice';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form';

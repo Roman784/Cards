@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
-import "./authForm.css";
+import "./AuthForm.css";
 
 export default function LogInPage() {
   const [name, setName] = useState<string>("");

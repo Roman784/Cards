@@ -7,7 +7,7 @@ import UserType from '../../Types/UserType';
 import ModuleType from '../../Types/ModuleType';
 import CardType from '../../Types/CardType';
 
-import { EditableCard } from '../../components/EditableCard';
+import { EditableCard } from '../../components/module/EditableCard';
 import "./Modules.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -16,8 +16,6 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import InputGroup from 'react-bootstrap/InputGroup';
-
-import { cardsData } from "../../temp_data/cardsData";
 
 export default function AddModulesPage() {
   const user = useSelector<any, UserType>(state => state.user);
@@ -39,13 +37,13 @@ export default function AddModulesPage() {
 
   async function loadCards() {
     await dispatch(reset());
-    for (let i = 0; i < cardsData.length; i++) {
-      await dispatch(addCard({
-        id: i,
-        term: cardsData[i].term,
-        definition: cardsData[i].definition
-      }));
-    }
+    // for (let i = 0; i < cardsData.length; i++) {
+    //   await dispatch(addCard({
+    //     id: i,
+    //     term: cardsData[i].term,
+    //     definition: cardsData[i].definition
+    //   }));
+    // }
   }
 
   const addNewCard = () => {
@@ -60,6 +58,7 @@ export default function AddModulesPage() {
 
   const saveModule = () => {
     let module: ModuleType = {
+      id: -1,
       title: title,
       access: access,
       cards: cards
