@@ -8,7 +8,6 @@ import AddModulePage from "./pages/modules/AddModulePage";
 import ModulesPage from "./pages/modules/ModulesPage";
 
 import Header from "./components/header/Header";
-
 import "./App.css";
 
 export default function App() {

@@ -13,11 +13,11 @@ namespace Backend.Controllers
         {
             try
             {
-                // Находим пользователя в БД.
+                // Проверяем пользователя на наличие в базе данных.
                 User? user = UsersContext.GetUser(loginData.Name, loginData.Password);
 
                 if (user is null)
-                    return Unauthorized();
+                    return Unauthorized(new { message = "User not found." });
 
                 // Генерируем токен.
                 string encodedJwt = JwtService.GenerateToken(user.Name); 

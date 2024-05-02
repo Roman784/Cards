@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCard, setTitle, setAccess } from '../../store/editableModuleSlice';
+import { addCard, setTitle, setAccess, reset } from '../../store/editableModuleSlice';
+import { useNavigate } from 'react-router-dom';
 
-import ModuleType from './ModuleType';
-import CardType from './CardType';
+import UserType from '../../Types/UserType';
+import ModuleType from '../../Types/ModuleType';
+import CardType from '../../Types/CardType';
 
-import { EditableCard } from './EditableCard';
+import { EditableCard } from '../../components/EditableCard';
 import "./Modules.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -18,6 +20,9 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { cardsData } from "../../temp_data/cardsData";
 
 export default function AddModulesPage() {
+  const user = useSelector<any, UserType>(state => state.user);
+  const navigate = useNavigate();
+
   const title = useSelector<any, string>(state => state.editableModule.title);
   const access = useSelector<any, number>(state => state.editableModule.access);
   const cards = useSelector<any, CardType[]>(state => state.editableModule.cards);
@@ -25,12 +30,17 @@ export default function AddModulesPage() {
   const dispatch = useDispatch<any>();
 
   useEffect(() => {
+    if (!user.isLogin) {
+      navigate("/login");
+      return;
+    }
     loadCards();
   }, []);
 
-  function loadCards() {
+  async function loadCards() {
+    await dispatch(reset());
     for (let i = 0; i < cardsData.length; i++) {
-      dispatch(addCard({
+      await dispatch(addCard({
         id: i,
         term: cardsData[i].term,
         definition: cardsData[i].definition

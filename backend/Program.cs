@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Добавляем БД.
+// Добавляем сервис базф данных.
 //builder.Services.AddDbContext<BeerRangeContext>();
 
 // Добавляем сервисы CORS.
