@@ -43,7 +43,9 @@ namespace Backend.Storage
 
         public static User AddUser(string name, string password)
         {
-            User newUser = new User() { Name = name, Password = password };
+            int id = Users.Max(u => u.Id) + 1;
+            User newUser = new User() { Id = id, Name = name, Password = password };
+
             Users.Add(newUser);
 
             return newUser;

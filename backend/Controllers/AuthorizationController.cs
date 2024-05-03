@@ -26,6 +26,7 @@ namespace Backend.Controllers
                 var response = new
                 {
                     accessToken = encodedJwt,
+                    id = user.Id,
                     name = user.Name
                 };
 
@@ -55,6 +56,7 @@ namespace Backend.Controllers
                 var response = new
                 {
                     accessToken = encodedJwt,
+                    id = newUser.Id,
                     name = newUser.Name
                 };
 
