@@ -101,7 +101,7 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
-        [HttpDelete, Route("/module/delete"), EnableCors("Local"), Authorize]
+        [HttpDelete, Route("/modules/delete"), EnableCors("Local"), Authorize]
         public IActionResult DeleteModule(int id)
         {
             try
