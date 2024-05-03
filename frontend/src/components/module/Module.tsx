@@ -1,20 +1,20 @@
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setModule } from '../../store/openedModuleSlice';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card';
 import "./Module.css"
 
 export default function Module({id, title}: {id: number, title: string}) {
-  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
   const openModule = (event : any) => {
     event.preventDefault();
 
-    dispatch(setModule(id));
-    navigate("/module");
+    navigate("/module", {
+      state: {
+        moduleId: id
+      }
+    });
   }
 
   return (

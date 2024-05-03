@@ -26,15 +26,15 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
     getModules(requestUrl, user)
     .then((response) => {
       // Заполняем временный список модулей.
-      let temp: ModuleFaceType[] = []; 
+      let tempModules: ModuleFaceType[] = []; 
       response.data.forEach((module: ModuleFaceType) => {
-        temp.push({
+        tempModules.push({
           id: module.id,
           title: module.title
         });
       });
 
-      setModules(temp);
+      setModules(tempModules);
     });
   }
 

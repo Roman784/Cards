@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getModule } from "../../api/requests";
 
 import CardType from "../../Types/CardType";
 import UserType from "../../Types/UserType";
-import ModuleType from "../../Types/ModuleType";
 
 import DemonstrationCard from "../../components/module/DemonstrationCard";
 
@@ -13,8 +13,8 @@ export default function ModulePage() {
   const [cards, setCards] = useState<CardType[]>([]);
 
   const user = useSelector<any, UserType>(state => state.user);
-  const module = useSelector<any, any>(state => state.openedModule);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (!user.isLogin) {
@@ -25,34 +25,25 @@ export default function ModulePage() {
   }, []);
 
   async function loadModule() {
-    const response = await fetch("https://localhost:7010/module?moduleId=" + (module.moduleId).toString(), 
-      {
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer " + user.accessToken
-        },
-    });
-
-    if (response.ok === true) {
-      const responsedModule = await response.json();
-      setTitle(responsedModule.title);
+    getModule(location.state.moduleId, user)
+    .then((response) => {
+      setTitle(response.data.title);
       
-      let temp: CardType[] = [];
-
-      responsedModule.cards.forEach((card: CardType) => {
-        temp.push({
+      // Заполняем временный список карточек.
+      let tempCards: CardType[] = [];
+      response.data.cards.forEach((card: CardType) => {
+        tempCards.push({
           id: card.id,
           term: card.term,
           definition: card.definition
         });
       });
 
-      setCards(temp);
-    }
-    else {
+      setCards(tempCards);
+    })
+    .catch(() => {
       navigate("/modules/my");
-    }
+    });
   } 
 
   return (

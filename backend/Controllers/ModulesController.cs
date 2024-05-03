@@ -54,14 +54,14 @@ namespace backend.Controllers
         }
 
         [HttpGet, Route("/module"), EnableCors("Local"), Authorize]
-        public IActionResult GetPrivateModules(int moduleId)
+        public IActionResult GetModule(int moduleId, int userId)
         {
             try
             {
-                if (moduleId < 0)
+                if (moduleId < 0 || userId < 0)
                     return StatusCode(400, "Unacceptable id.");
 
-                Module module = UsersContext.GetModule(moduleId);
+                Module? module = UsersContext.GetModule(moduleId);
                 List<Card> cards = UsersContext.GetCards(moduleId);
 
                 if (module == null)
@@ -70,7 +70,7 @@ namespace backend.Controllers
                 var response = new
                 {
                     title = module.Title,
-                    cards = cards
+                    cards
                 };
                 return Ok(response);
             }
