@@ -1,0 +1,20 @@
+.star-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.star-checkbox input[type="checkbox"] {
+    display: none;
+    width: 100px;
+    height: 100px;
+}
+
+.star-checkbox .star-icon {
+    font-size: 20px;
+    color: #5a5a5a00;
+}
+
+.star-checkbox input[type="checkbox"]:checked ~ .star-icon {
+    color: #ffd041;
+}
