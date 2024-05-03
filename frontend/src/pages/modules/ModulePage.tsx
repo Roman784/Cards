@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getModule } from "../../api/requests";
+import { getModule, deleteModule } from "../../api/requests";
 
 import CardType from "../../Types/CardType";
 import UserType from "../../Types/UserType";
@@ -52,7 +52,7 @@ export default function ModulePage() {
     });
   } 
 
-  const editModule = () => {
+  const handleEdit = () => {
     navigate("/modules/edit", {
       state: {
         moduleId: moduleId
@@ -60,12 +60,24 @@ export default function ModulePage() {
     });
   }
 
+  const handleDelete = () => {
+    deleteModule(moduleId, user)
+    .then(() => {
+      navigate("/modules/my");
+    });
+  }
+
   return (
     <>
       <div className="header-container">
-        <h3 className="title">{title}</h3>
-        {user.id === authorId &&
-          <Button className="edit-btn" variant="outline-primary" onClick={editModule}>Edit</Button>}
+        <div className="header-container">
+          <h3 className="title">{title}</h3>
+          {user.id === authorId &&
+            <Button className="edit-btn" variant="outline-primary" onClick={handleEdit}>Edit</Button>}
+          </div>
+
+          {user.id === authorId &&
+            <Button className="delete-btn" variant="danger" onClick={handleDelete}>Delete</Button>}
       </div>
 
       {cards.length > 0 && 

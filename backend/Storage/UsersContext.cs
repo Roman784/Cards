@@ -122,7 +122,6 @@ namespace Backend.Storage
             if (module == null) return;
 
             Modules.Remove(module);
-            Console.WriteLine("bbbbaaaaa");
             DeleteCards(id);
         }
 

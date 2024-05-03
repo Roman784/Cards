@@ -101,6 +101,21 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
+        [HttpDelete, Route("/module/delete"), EnableCors("Local"), Authorize]
+        public IActionResult DeleteModule(int id)
+        {
+            try
+            {
+                if (id < 0)
+                    return StatusCode(500, "Failed to delete the module.");
+
+                UsersContext.DeleteModule(id);
+
+                return Ok();
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
         public class AddModuleData : Module
         {
             public List<Card>? Cards { get; set; }
