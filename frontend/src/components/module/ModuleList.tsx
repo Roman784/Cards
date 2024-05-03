@@ -31,24 +31,26 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
         },
     });
 
-    const responsedModules = await response.json()
+    if (response.ok === true) {
+      const responsedModules = await response.json()
 
-    let temp: ModuleFaceType[] = [];
+      let temp: ModuleFaceType[] = [];
 
-    responsedModules.forEach((module: ModuleFaceType) => {
-      temp.push({
-        id: module.id,
-        title: module.title
+      responsedModules.forEach((module: ModuleFaceType) => {
+        temp.push({
+          id: module.id,
+          title: module.title
+        });
       });
-    });
 
-    setModules(temp);
+      setModules(temp);
+    }
   }
 
   return (
     <>
       {modules.length > 0 && modules.map((module: ModuleFaceType) => (
-        <Module key={module.id} title={module.title} />
+        <Module key={module.id} id={module.id} title={module.title} />
       ))}
     </>
   );

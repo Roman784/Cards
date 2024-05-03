@@ -24,7 +24,7 @@ namespace Backend
                 issuer: Options.ISSUER,
                 audience: Options.AUDIENCE,
                 claims: claims,
-                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(2)),
+                expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(60)),
                 signingCredentials: new SigningCredentials(Options.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
 
             return new JwtSecurityTokenHandler().WriteToken(jwt);

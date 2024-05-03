@@ -28,7 +28,7 @@ export function EditableCard({ id, term, definition }: { id: number; term: strin
   };
 
   return (
-    <Card body className="editable-card">
+    <Card body className="card">
       <Form.Control type="text" placeholder="Term" value={form.term} onChange={(e) => setForm(prev => ({ ...prev, term: e.target.value }))} />
       <p />
       <Form.Control type="text" placeholder="Definition" value={form.definition} onChange={(e) => setForm(prev => ({ ...prev, definition: e.target.value }))} />

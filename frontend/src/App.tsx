@@ -7,6 +7,7 @@ import ProfilePage from "./pages/account/ProfilePage";
 import AddModulePage from "./pages/modules/AddModulePage";
 import MyModulesPage from "./pages/modules/MyModulesPage";
 import SavedModulesPage from "./pages/modules/SavedModulesPage";
+import ModulePage from "./pages/modules/ModulePage";
 
 import Header from "./components/header/Header";
 import "./App.css";
@@ -25,7 +26,7 @@ export default function App() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/profile" element={<ProfilePage />} />
 
-          <Route path="/modules" element={<BoardPage />} />
+          <Route path="/module" element={<ModulePage />} />
           <Route path="/modules/add" element={<AddModulePage />} />
           <Route path="/modules/my" element={<MyModulesPage />} />
           <Route path="/modules/saved" element={<SavedModulesPage />} />

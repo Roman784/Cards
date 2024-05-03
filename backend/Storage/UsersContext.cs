@@ -54,19 +54,30 @@ namespace Backend.Storage
             int moduleId = Modules.Max(m => m.Id) + 1;
             int startCardId = Cards.Max(c => c.Id) + 1;
 
-            module.Id = moduleId;
-            module.UserId = userId;
+            Module newModule = new Module()
+            {
+                Id = moduleId,
+                UserId = userId,
+                Title = module.Title,
+                Access = module.Access
+            };
 
-            for (int id = startCardId; id < cards.Count; id++)
+            for (int id = startCardId; id < startCardId + cards.Count; id++)
             {
                 int index = id - startCardId;
 
-                cards[index].Id = id;
-                cards[index].ModuleId = moduleId;
+                Card newCard = new Card()
+                {
+                    Id = id,
+                    ModuleId = moduleId,
+                    Term = cards[index].Term,
+                    Definition = cards[index].Definition
+                };
+
+                Cards.Add(newCard);
             }
 
-            Modules.Add(module);
-            Cards.AddRange(cards);
+            Modules.Add(newModule);
 
             return moduleId;
         }
@@ -85,9 +96,9 @@ namespace Backend.Storage
                     select module).ToList();
         }
 
-        public static Module? GetModule(int userId)
+        public static Module? GetModule(int modelId)
         {
-            return Modules.FirstOrDefault(module => module.UserId == userId);
+            return Modules.FirstOrDefault(module => module.Id == modelId);
         }
 
         public static List<Card> GetCards(int moduleId)

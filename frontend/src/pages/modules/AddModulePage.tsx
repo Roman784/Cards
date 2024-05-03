@@ -4,7 +4,6 @@ import { addCard, setTitle, setAccess, reset } from '../../store/editableModuleS
 import { useNavigate } from 'react-router-dom';
 
 import UserType from '../../Types/UserType';
-import ModuleType from '../../Types/ModuleType';
 import CardType from '../../Types/CardType';
 
 import { EditableCard } from '../../components/module/EditableCard';
@@ -57,13 +56,6 @@ export default function AddModulesPage() {
   };
 
   const saveModule = async () => {
-    let module: ModuleType = {
-      id: -1,
-      title: title,
-      access: access,
-      cards: cards
-    }
-
     // Отправляем запрос на сервер с данными формы.
     const response = await fetch("https://localhost:7010/modules/add", {
       method: "POST",
@@ -77,7 +69,7 @@ export default function AddModulesPage() {
     });
 
     if (response.ok === true) {
-      const moduleId = await response.json();
+      //const moduleId = await response.json();
       navigate("/modules/my");
     }
   };

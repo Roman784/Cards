@@ -42,11 +42,33 @@ namespace backend.Controllers
                 if (moduleData == null || moduleData.Cards == null || userId == -1)
                     return StatusCode(500, "Failed to create the module.");
 
-                int moduleId = -1;
-
-                moduleId = UsersContext.AddModule(userId, moduleData, moduleData.Cards);
+                int moduleId = UsersContext.AddModule(userId, moduleData, moduleData.Cards);
 
                 return Ok(moduleId);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
+        [HttpGet, Route("/module"), EnableCors("Local"), Authorize]
+        public IActionResult GetPrivateModules(int moduleId)
+        {
+            try
+            {
+                if (moduleId < 0)
+                    return StatusCode(400, "Unacceptable id.");
+
+                Module module = UsersContext.GetModule(moduleId);
+                List<Card> cards = UsersContext.GetCards(moduleId);
+
+                if (module == null)
+                    return Conflict("Module not found.");
+
+                var response = new
+                {
+                    title = module.Title,
+                    cards = cards
+                };
+                return Ok(response);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
