@@ -8,6 +8,7 @@ import AddModulePage from "./pages/modules/AddModulePage";
 import MyModulesPage from "./pages/modules/MyModulesPage";
 import SavedModulesPage from "./pages/modules/SavedModulesPage";
 import ModulePage from "./pages/modules/ModulePage";
+import EditModulePage from "./pages/modules/EditModulePage";
 
 import Header from "./components/header/Header";
 import "./App.css";
@@ -28,6 +29,7 @@ export default function App() {
 
           <Route path="/module" element={<ModulePage />} />
           <Route path="/modules/add" element={<AddModulePage />} />
+          <Route path="/modules/edit" element={<EditModulePage />} />
           <Route path="/modules/my" element={<MyModulesPage />} />
           <Route path="/modules/saved" element={<SavedModulesPage />} />
           

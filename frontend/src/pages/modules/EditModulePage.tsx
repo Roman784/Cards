@@ -1,12 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { reset } from '../../store/editableModuleSlice';
-import { useNavigate } from 'react-router-dom';
+import { addCard, setTitle, setAccess, reset } from '../../store/editableModuleSlice';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getModule } from '../../api/requests';
 
 import UserType from '../../Types/UserType';
 import CardType from '../../Types/CardType';
 import ModuleEditor from '../../components/module/ModuleEditor';
 
-export default function AddModulesPage() {
+export default function EditModulePage() {
   const user = useSelector<any, UserType>(state => state.user);
   const navigate = useNavigate();
 
@@ -15,17 +16,38 @@ export default function AddModulesPage() {
   const cards = useSelector<any, CardType[]>(state => state.editableModule.cards);
 
   const dispatch = useDispatch<any>();
+  const location = useLocation();
+
+  const moduleId = location.state.moduleId;
 
   function loadModule() {
     dispatch(reset());
+
+    getModule(moduleId, user)
+    .then((response) => {
+      response.data.cards.forEach((card: CardType) => {
+        dispatch(addCard({
+          id: card.id,
+          term: card.term,
+          definition: card.definition
+        }));
+      });
+
+      dispatch(setTitle(response.data.title));
+      dispatch(setAccess(response.data.access));
+    })
+    .catch(() => {
+      navigate("/modules/my");
+    });
   } 
 
   const saveModule = async () => {
     // Отправляем запрос на сервер с данными формы.
-    const response = await fetch("https://localhost:7010/modules/add", {
+    const response = await fetch("https://localhost:7010/modules/edit", {
       method: "PUT",
       headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + user.accessToken },
       body: JSON.stringify({
+        id: moduleId,
         userId: user.id,
         title: title,
         access: access,
@@ -34,13 +56,14 @@ export default function AddModulesPage() {
     });
 
     if (response.ok === true) {
+      //const moduleId = await response.json();
       navigate("/modules/my");
     }
   };
 
   return (
     <>
-      <h3 style={{marginBottom: "30px"}}>Add module</h3>
+      <h3 style={{marginBottom: "30px"}}>Edit module</h3>
 
       <ModuleEditor loadModule={loadModule} saveModule={saveModule} />
     </>

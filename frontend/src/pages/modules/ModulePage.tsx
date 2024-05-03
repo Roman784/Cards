@@ -6,15 +6,21 @@ import { getModule } from "../../api/requests";
 import CardType from "../../Types/CardType";
 import UserType from "../../Types/UserType";
 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Button from 'react-bootstrap/Button';
 import DemonstrationCard from "../../components/module/DemonstrationCard";
+import "./Modules.css"
 
 export default function ModulePage() {
   const [title, setTitle] = useState<string>("");
+  const [authorId, setAuthorId] = useState<number>(-1);
   const [cards, setCards] = useState<CardType[]>([]);
 
   const user = useSelector<any, UserType>(state => state.user);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const moduleId = location.state.moduleId;
 
   useEffect(() => {
     if (!user.isLogin) {
@@ -24,11 +30,9 @@ export default function ModulePage() {
     loadModule();
   }, []);
 
-  async function loadModule() {
-    getModule(location.state.moduleId, user)
+  function loadModule() {
+    getModule(moduleId, user)
     .then((response) => {
-      setTitle(response.data.title);
-      
       // Заполняем временный список карточек.
       let tempCards: CardType[] = [];
       response.data.cards.forEach((card: CardType) => {
@@ -39,6 +43,8 @@ export default function ModulePage() {
         });
       });
 
+      setTitle(response.data.title);
+      setAuthorId(response.data.authorId);
       setCards(tempCards);
     })
     .catch(() => {
@@ -46,9 +52,21 @@ export default function ModulePage() {
     });
   } 
 
+  const editModule = () => {
+    navigate("/modules/edit", {
+      state: {
+        moduleId: moduleId
+      }
+    });
+  }
+
   return (
     <>
-      <h3 className="title">{title}</h3>
+      <div className="header-container">
+        <h3 className="title">{title}</h3>
+        {user.id === authorId &&
+          <Button className="edit-btn" variant="outline-primary" onClick={editModule}>Edit</Button>}
+      </div>
 
       {cards.length > 0 && 
       cards.map((card: CardType) => (

@@ -36,19 +36,41 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
-        [HttpPost, Route("/modules/add"), EnableCors("Local"), Authorize]
+        [HttpPut, Route("/modules/add"), EnableCors("Local"), Authorize]
         public IActionResult AddModule(AddModuleData moduleData)
         {
             try
             {
-                int userId = UsersContext.GetUser(moduleData.UserName)?.Id ?? -1;
-
-                if (moduleData == null || moduleData.Cards == null || userId == -1)
+                if (moduleData == null || moduleData.Cards == null || moduleData.UserId < 0)
                     return StatusCode(500, "Failed to create the module.");
 
-                int moduleId = UsersContext.AddModule(userId, moduleData, moduleData.Cards);
+                int moduleId = UsersContext.AddModule(moduleData.UserId, moduleData, moduleData.Cards);
 
                 return Ok(moduleId);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
+        [HttpPut, Route("/modules/edit"), EnableCors("Local"), Authorize]
+        public IActionResult EditModule(AddModuleData moduleData)
+        {
+            try
+            {
+                if (moduleData == null || moduleData.Cards == null || moduleData.UserId < 0)
+                    return StatusCode(500, "Failed to create the module.");
+
+                Module? module = UsersContext.GetModule(moduleData.Id);
+
+                if (module == null)
+                    return StatusCode(500, "Failed to create the module.");
+
+                module.Title = moduleData.Title;
+                module.Access = moduleData.Access;
+
+                UsersContext.DeleteCards(moduleData.Id);
+                UsersContext.AddCards(moduleData.Id, moduleData.Cards);
+
+                return Ok();
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
@@ -70,6 +92,8 @@ namespace backend.Controllers
                 var response = new
                 {
                     title = module.Title,
+                    authorId = module.UserId,
+                    access = module.Access,
                     cards
                 };
                 return Ok(response);
@@ -79,7 +103,6 @@ namespace backend.Controllers
 
         public class AddModuleData : Module
         {
-            public string? UserName { get; set; }
             public List<Card>? Cards { get; set; }
         }
     }

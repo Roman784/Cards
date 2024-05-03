@@ -6,3 +6,19 @@
 .title-form {
     margin-bottom: 1.5rem;
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.title {
+    margin-right: auto;
+}
+
+.edit-btn {
+    margin-bottom: auto;
+    margin-left: auto;
+    width: 6rem;
+    height: 2.5rem;
+}

@@ -54,7 +54,6 @@ namespace Backend.Storage
         public static int AddModule(int userId, Module module, List<Card> cards)
         {
             int moduleId = Modules.Max(m => m.Id) + 1;
-            int startCardId = Cards.Max(c => c.Id) + 1;
 
             Module newModule = new Module()
             {
@@ -63,6 +62,16 @@ namespace Backend.Storage
                 Title = module.Title,
                 Access = module.Access
             };
+
+            Modules.Add(newModule);
+            AddCards(moduleId, cards);
+
+            return moduleId;
+        }
+
+        public static void AddCards(int moduleId, List<Card> cards)
+        {
+            int startCardId = Cards.Max(c => c.Id) + 1;
 
             for (int id = startCardId; id < startCardId + cards.Count; id++)
             {
@@ -78,10 +87,6 @@ namespace Backend.Storage
 
                 Cards.Add(newCard);
             }
-
-            Modules.Add(newModule);
-
-            return moduleId;
         }
 
         public static List<Module> GetModules(int userId)
@@ -108,6 +113,29 @@ namespace Backend.Storage
             return (from card in Cards
                    where card.ModuleId == moduleId
                    select card).ToList();
+        }
+
+        public static void DeleteModule(int id)
+        {
+            Module? module = Modules.FirstOrDefault(m => m.Id == id);
+
+            if (module == null) return;
+
+            Modules.Remove(module);
+            Console.WriteLine("bbbbaaaaa");
+            DeleteCards(id);
+        }
+
+        public static void DeleteCards(int moduleId)
+        {
+            List<Card> cards = (from card in Cards
+                                where card.ModuleId == moduleId
+                                select card).ToList();
+
+            foreach (Card card in cards)
+            {
+                Cards.Remove(card);
+            }
         }
     }
 }
