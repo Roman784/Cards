@@ -7,6 +7,8 @@ export default function MyModulesPage() {
 
   return (
     <>
+      <h3 className="title">My modules</h3>
+
       <ModuleList requestUrl={"https://localhost:7010/modules/my?userName=" + user.name} />
     </>
   );

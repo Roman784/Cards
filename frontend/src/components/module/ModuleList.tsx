@@ -22,7 +22,6 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
   }, []);
 
   async function loadModules() {
-    console.log(requestUrl);
     const response = await fetch(requestUrl, 
       {
         method: "GET",
@@ -33,7 +32,7 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
     });
 
     const responsedModules = await response.json()
-    
+
     let temp: ModuleFaceType[] = [];
 
     responsedModules.forEach((module: ModuleFaceType) => {

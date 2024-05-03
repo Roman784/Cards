@@ -56,7 +56,7 @@ export default function AddModulesPage() {
     }));
   };
 
-  const saveModule = () => {
+  const saveModule = async () => {
     let module: ModuleType = {
       id: -1,
       title: title,
@@ -64,7 +64,22 @@ export default function AddModulesPage() {
       cards: cards
     }
 
-    console.log("Save module: ", module)
+    // Отправляем запрос на сервер с данными формы.
+    const response = await fetch("https://localhost:7010/modules/add", {
+      method: "POST",
+      headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + user.accessToken },
+      body: JSON.stringify({
+        userName: user.name,
+        title: title,
+        access: access,
+        cards: cards
+      })
+    });
+
+    if (response.ok === true) {
+      const moduleId = await response.json();
+      navigate("/modules/my");
+    }
   };
 
   return (

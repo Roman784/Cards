@@ -49,6 +49,28 @@ namespace Backend.Storage
             return newUser;
         }
 
+        public static int AddModule(int userId, Module module, List<Card> cards)
+        {
+            int moduleId = Modules.Max(m => m.Id) + 1;
+            int startCardId = Cards.Max(c => c.Id) + 1;
+
+            module.Id = moduleId;
+            module.UserId = userId;
+
+            for (int id = startCardId; id < cards.Count; id++)
+            {
+                int index = id - startCardId;
+
+                cards[index].Id = id;
+                cards[index].ModuleId = moduleId;
+            }
+
+            Modules.Add(module);
+            Cards.AddRange(cards);
+
+            return moduleId;
+        }
+
         public static List<Module> GetPublicModules()
         {
             return (from module in Modules
