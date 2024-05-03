@@ -84,10 +84,10 @@ namespace Backend.Storage
             return moduleId;
         }
 
-        public static List<Module> GetPublicModules()
+        public static List<Module> GetModules(int userId)
         {
             return (from module in Modules
-                    where module.Access == 1
+                    where module.Access == 1 || module.UserId == userId
                     select module).ToList();
         }
 

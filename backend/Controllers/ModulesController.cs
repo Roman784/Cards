@@ -4,6 +4,7 @@ using Backend.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace backend.Controllers
@@ -12,22 +13,25 @@ namespace backend.Controllers
     public class ModulesController : ControllerBase
     {
         [HttpGet, Route("/modules"), EnableCors("Local"), Authorize]
-        public IActionResult GetPublicModules()
+        public IActionResult GetModules(int userId)
         {
             try
             {
-                return Ok(UsersContext.GetPublicModules());
+                List<Module> modules = UsersContext.GetModules(userId);
+
+                return Ok(modules);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
         [HttpGet, Route("/modules/my"), EnableCors("Local"), Authorize]
-        public IActionResult GetPrivateModules(string userName)
+        public IActionResult GetUserModules(int userId)
         {
             try
             {
-                int id = UsersContext.GetUser(userName)?.Id ?? -1;
-                return Ok(UsersContext.GetUserModules(id));
+                List<Module> modules = UsersContext.GetUserModules(userId);
+
+                return Ok(modules);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }

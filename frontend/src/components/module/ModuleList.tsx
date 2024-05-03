@@ -6,6 +6,7 @@ import UserType from "../../Types/UserType";
 
 import Module from "../../components/module/Module";
 import ModuleFaceType from "../../Types/ModuleFaceType";
+import { getModules } from "../../api/requests";
 
 export default function ModuleList({requestUrl} : {requestUrl: string}) {
   const [modules, setModules] = useState<ModuleFaceType[]>([]);
@@ -21,22 +22,12 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
     loadModules();
   }, []);
 
-  async function loadModules() {
-    const response = await fetch(requestUrl, 
-      {
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "Authorization": "Bearer " + user.accessToken
-        },
-    });
-
-    if (response.ok === true) {
-      const responsedModules = await response.json()
-
-      let temp: ModuleFaceType[] = [];
-
-      responsedModules.forEach((module: ModuleFaceType) => {
+  function loadModules() {
+    getModules(requestUrl, user)
+    .then((response) => {
+      // Заполняем временный список модулей.
+      let temp: ModuleFaceType[] = []; 
+      response.data.forEach((module: ModuleFaceType) => {
         temp.push({
           id: module.id,
           title: module.title
@@ -44,7 +35,7 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
       });
 
       setModules(temp);
-    }
+    });
   }
 
   return (
