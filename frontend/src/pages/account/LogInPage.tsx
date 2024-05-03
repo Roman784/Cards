@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../store/userSlice';
 import { useNavigate } from 'react-router-dom';
+import { login } from '../../api/requests';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
@@ -19,7 +20,7 @@ export default function LogInPage() {
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
-  const handleSubmit = async (event : any) => {
+  const handleSubmit = (event : any) => {
     event.preventDefault();
 
     // Проверка формы на ошибки.
@@ -27,28 +28,20 @@ export default function LogInPage() {
     if (hasError) return;
 
     // Отправляем запрос на сервер с данными формы.
-    const response = await fetch("https://localhost:7010/login", {
-      method: "POST",
-      headers: { "Accept": "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: name,
-        password: password
-      })
-    });
-    
-    if (response.ok === true) { // Сохраняем данные пользователя в redux.
-      const data = await response.json();
-      dispatch(logIn(data));
+    login(name, password)
+    .then((response) => { // Сохраняем данные пользователя в redux.
+      dispatch(logIn(response.data));
       navigate("/");
-    }
-    if (response.status === 401) { // Выводим сообщение об ошибке авторизации.
-      const data = await response.json();
-      setErrorMessage([...errorMessage, data.message]);
-    }
-    else { // Очистка формы.
-      setName("");
-      setPassword("");
-    }
+    })
+    .catch((error) => { 
+      if (error.response.status === 401) { // Выводим сообщение об ошибке авторизации.
+        setErrorMessage([...errorMessage, error.response.data.message]);
+      }
+      else { // Очистка формы.
+        setName("");
+        setPassword("");
+      }
+    });
   };
 
   function handleErrors() {
