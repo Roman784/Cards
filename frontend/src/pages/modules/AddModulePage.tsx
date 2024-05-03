@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import UserType from '../../Types/UserType';
 import CardType from '../../Types/CardType';
 import ModuleEditor from '../../components/module/ModuleEditor';
+import { addModule } from '../../api/requests';
 
 export default function AddModulesPage() {
   const user = useSelector<any, UserType>(state => state.user);
@@ -22,20 +23,10 @@ export default function AddModulesPage() {
 
   const saveModule = async () => {
     // Отправляем запрос на сервер с данными формы.
-    const response = await fetch("https://localhost:7010/modules/add", {
-      method: "PUT",
-      headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + user.accessToken },
-      body: JSON.stringify({
-        userId: user.id,
-        title: title,
-        access: access,
-        cards: cards
-      })
-    });
-
-    if (response.ok === true) {
+    addModule(title, access, cards, user)
+    .then(() => {
       navigate("/modules/my");
-    }
+    });
   };
 
   return (

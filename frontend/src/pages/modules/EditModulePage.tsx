@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { addCard, setTitle, setAccess, reset } from '../../store/editableModuleSlice';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getModule } from '../../api/requests';
+import { editModule, getModule } from '../../api/requests';
 
 import UserType from '../../Types/UserType';
 import CardType from '../../Types/CardType';
@@ -43,22 +43,10 @@ export default function EditModulePage() {
 
   const saveModule = async () => {
     // Отправляем запрос на сервер с данными формы.
-    const response = await fetch("https://localhost:7010/modules/edit", {
-      method: "PUT",
-      headers: { "Accept": "application/json", "Content-Type": "application/json", "Authorization": "Bearer " + user.accessToken },
-      body: JSON.stringify({
-        id: moduleId,
-        userId: user.id,
-        title: title,
-        access: access,
-        cards: cards
-      })
-    });
-
-    if (response.ok === true) {
-      //const moduleId = await response.json();
+    editModule(moduleId, title, access, cards, user)
+    .then(() => {
       navigate("/modules/my");
-    }
+    });
   };
 
   return (
