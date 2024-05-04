@@ -44,7 +44,7 @@ export default function Module({id, title, isFavorite}: {id: number, title: stri
           <Card.Title className="text-center">{title}</Card.Title>
         </Card.Body>
 
-        <div className="saved-btn">
+        <div className="favorite-btn">
           <StarCheckbox checked={checked} onChange={handleCheckboxChange} />
         </div>
       </Card>

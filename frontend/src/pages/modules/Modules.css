@@ -29,3 +29,15 @@
     width: 6rem;
     height: 2.5rem;
 }
+
+.view-btn {
+    margin-left: 1rem;
+    margin-bottom: auto;
+    width: auto;
+    height: 2.5rem;
+}
+
+.study-btn {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
