@@ -18,7 +18,7 @@ export default function App() {
     <>
       <Header />
 
-      <main className="content">
+      <main className="content" style={{marginBottom: "300px"}}>
         <Routes>
           <Route path="/" element={<BoardPage />} />
           <Route path="/board" element={<BoardPage />} />

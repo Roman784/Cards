@@ -24,8 +24,12 @@ export default function AddModulesPage() {
   const saveModule = async () => {
     // Отправляем запрос на сервер с данными формы.
     addModule(title, access, cards, user)
-    .then(() => {
-      navigate("/modules/my");
+    .then((response) => {
+      navigate("/module", {
+        state: {
+          moduleId: response.data
+        }
+      });
     });
   };
 

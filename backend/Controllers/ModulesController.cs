@@ -70,7 +70,7 @@ namespace backend.Controllers
                 UsersContext.DeleteCards(moduleData.Id);
                 UsersContext.AddCards(moduleData.Id, moduleData.Cards);
 
-                return Ok();
+                return Ok(moduleData.Id);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }

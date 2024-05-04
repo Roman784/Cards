@@ -36,16 +36,18 @@ export default function Module({id, title, isFavorite}: {id: number, title: stri
   }
 
   return (
-    <Card className="module-card">
-      <div className="open-module-btn" onClick={openModule} />
+    <>
+      <Card className="module-card">
+        <div className="open-module-btn" onClick={openModule} />
 
-      <Card.Body className="d-flex align-items-center justify-content-center">
-        <Card.Title className="text-center">{title}</Card.Title>
-      </Card.Body>
+        <Card.Body className="d-flex align-items-center justify-content-center">
+          <Card.Title className="text-center">{title}</Card.Title>
+        </Card.Body>
 
-      <div className="saved-btn">
-        <StarCheckbox checked={checked} onChange={handleCheckboxChange} />
-      </div>
-    </Card>
+        <div className="saved-btn">
+          <StarCheckbox checked={checked} onChange={handleCheckboxChange} />
+        </div>
+      </Card>
+    </>
   );
 }

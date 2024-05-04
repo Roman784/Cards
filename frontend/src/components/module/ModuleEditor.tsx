@@ -64,7 +64,7 @@ export default function ModuleEditor({loadModule, saveModule}: {loadModule: any,
         <EditableCard key={card.id} id={card.id} term={card.term} definition={card.definition} />
       ))}
 
-      <div style={{marginBottom: "300px"}}>
+      <div>
         <Button variant="outline-primary" onClick={addNewCard} style={{ width: "150px", marginBottom: "1rem"}}>Add card</Button>
         <Button variant="primary" onClick={saveModule} style={{width: "100%", marginLeft: "auto"}}>Save module</Button>
       </div>

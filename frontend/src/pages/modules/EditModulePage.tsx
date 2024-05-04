@@ -44,8 +44,12 @@ export default function EditModulePage() {
   const saveModule = async () => {
     // Отправляем запрос на сервер с данными формы.
     editModule(moduleId, title, access, cards, user)
-    .then(() => {
-      navigate("/modules/my");
+    .then((response) => {
+      navigate("/module", {
+        state: {
+          moduleId: response.data
+        }
+      });
     });
   };
 
