@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import CardType from "../../Types/CardType";
 
@@ -23,26 +23,26 @@ export default function StudyModule({cards}: {cards: CardType[]}) {
 
   return (
     <>
-      {/* Карточка. */}
-      <div>
-        {cards.length > 0 &&
+      {cards.length <= 0 &&
+        <span>Нет карточек...</span>}
+
+      {cards.length > 0 &&
+        <div>
+          {/* Карточка. */}
           <StudyCard 
             term={cards[cardIndex].term} 
             definition={cards[cardIndex].definition} 
             isFlipped={isCardFlipped} 
             onClick={() => setIsCardFlipped(!isCardFlipped)}
-          />}
+          />
 
-        {cards.length <= 0 &&
-          <span>Нет карточек...</span>}
-      </div>
-
-      {/* Кнопки переключения карточек. */}
-      <div className="btn-contener">
-        <Button className="previous-card-btn" variant="outline-primary" onClick={() => changeCard(-1)}>Previous</Button>
-        {cardIndex + 1} / {cards.length}
-        <Button className="next-card-btn" variant="outline-primary" onClick={() => changeCard(1)}>Next</Button>
-      </div>
+          {/* Кнопки переключения карточек. */}
+          <div className="btn-contener">
+            <Button className="previous-card-btn" variant="outline-primary" onClick={() => changeCard(-1)}>Previous</Button>
+            {cardIndex + 1} / {cards.length}
+            <Button className="next-card-btn" variant="outline-primary" onClick={() => changeCard(1)}>Next</Button>
+          </div>
+        </div>}
     </>
   );
 }

@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getModule, deleteModule } from "../../api/requests";
+import { getModule, deleteModule, setFavoriteModules } from "../../api/requests";
 
 import CardType from "../../Types/CardType";
 import UserType from "../../Types/UserType";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
+import StarCheckbox from "../../components/StarCheckbox";
 import DemonstrationCard from "../../components/module/DemonstrationCard";
 import StudyModule from "../../components/studyModule/StudyModule";
 import "./Modules.css"
 
 export default function ModulePage() {
   const [title, setTitle] = useState<string>("");
+  const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [authorId, setAuthorId] = useState<number>(-1);
   const [cards, setCards] = useState<CardType[]>([]);
   const [isStudy, setIsStudy] = useState<boolean>(false);
@@ -48,11 +50,23 @@ export default function ModulePage() {
       setTitle(response.data.title);
       setAuthorId(response.data.authorId);
       setCards(tempCards);
+      
+      setIsFavorite(location.state.isFavoriteModule);
     })
     .catch(() => {
       navigate("/modules/my");
     });
   } 
+
+  const handleIsFavoriteChange = (event: any) => {
+    const value = event.target.checked
+    
+    // Отправляем запрос на изменение на сервер.
+    setFavoriteModules(user, moduleId, value)
+    .then(() => {
+      setIsFavorite(value);
+    });
+  }
 
   const handleEdit = () => {
     navigate("/modules/edit", {
@@ -75,6 +89,11 @@ export default function ModulePage() {
         <div className="header-container">
           
           <h3 className="title">{title}</h3>
+
+          {/* Кнопка добавления в избранное. */}
+          <div className="is-favorite">
+            <StarCheckbox checked={isFavorite} onChange={handleIsFavoriteChange}/>
+          </div>
 
           {/* Кнопка просмотра модуля. */}
           {isStudy &&

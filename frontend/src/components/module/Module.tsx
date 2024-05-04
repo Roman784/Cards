@@ -9,19 +9,19 @@ import Card from 'react-bootstrap/Card';
 import StarCheckbox from '../StarCheckbox';
 import "./Module.css"
 
-export default function Module({id, title, isFavorite}: {id: number, title: string, isFavorite: boolean}) {
-  const [checked, setChecked] = useState(isFavorite);
+export default function Module({id, title, isFavoriteModule}: {id: number, title: string, isFavoriteModule: boolean}) {
+  const [isFavorite, setIsFavorite] = useState<boolean>(isFavoriteModule);
 
   const user = useSelector<any, UserType>(state => state.user);
   const navigate = useNavigate();
 
-  const handleCheckboxChange = (event: any) => {
+  const handleIsFavoriteChange = (event: any) => {
     const value = event.target.checked
     
     // Отправляем запрос на изменение на сервер.
     setFavoriteModules(user, id, value)
     .then(() => {
-      setChecked(value);
+      setIsFavorite(value);
     });
   }
 
@@ -30,7 +30,8 @@ export default function Module({id, title, isFavorite}: {id: number, title: stri
 
     navigate("/module", {
       state: {
-        moduleId: id
+        moduleId: id,
+        isFavoriteModule: isFavorite
       }
     });
   }
@@ -45,7 +46,7 @@ export default function Module({id, title, isFavorite}: {id: number, title: stri
         </Card.Body>
 
         <div className="favorite-btn">
-          <StarCheckbox checked={checked} onChange={handleCheckboxChange} />
+          <StarCheckbox checked={isFavorite} onChange={handleIsFavoriteChange} />
         </div>
       </Card>
     </>
