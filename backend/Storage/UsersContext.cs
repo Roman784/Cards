@@ -150,5 +150,28 @@ namespace Backend.Storage
                     where module.UserId == userId
                     select module).ToList();
         }
+
+        public static void AddFavoriteModule(int userId, int moduleId)
+        {
+            int id = FavoriteModules.Max(m => m.Id) + 1;
+
+            FavoriteModule module = new FavoriteModule()
+            {
+                Id = id,
+                UserId = userId,
+                ModuleId = moduleId
+            };
+
+            FavoriteModules.Add(module);
+        }
+
+        public static void RemoveFavoriteModule(int userId, int moduleId) 
+        {
+            FavoriteModule? module = FavoriteModules.FirstOrDefault(m => m.UserId == userId && m.ModuleId == moduleId);
+
+            if (module == null) return;
+
+            FavoriteModules.Remove(module);
+        }
     }
 }

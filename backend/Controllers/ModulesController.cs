@@ -141,6 +141,21 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
+        [HttpPut, Route("/modules/favorites/set"), EnableCors("Local"), Authorize]
+        public IActionResult SetFavoriteModules(int userId, int moduleId, bool value)
+        {
+            try
+            {
+                if (value)
+                    UsersContext.AddFavoriteModule(userId, moduleId);
+                else
+                    UsersContext.RemoveFavoriteModule(userId, moduleId);
+
+                return Ok();
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
         public class AddModuleData : Module
         {
             public List<Card>? Cards { get; set; }
