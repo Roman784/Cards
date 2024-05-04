@@ -41,7 +41,7 @@ export default function Header() {
               <NavDropdown title="Modules" id="collapsible-nav-dropdown">
 								<NavDropdown.Item as={Link} to="/modules/add">Add</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/modules/my">My</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/modules/saved">Saved</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/modules/favorites">Favorites</NavDropdown.Item>
               </NavDropdown>
 
             </Nav>

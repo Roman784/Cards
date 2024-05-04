@@ -6,7 +6,7 @@ import SignUpPage from "./pages/account/SignUpPage";
 import ProfilePage from "./pages/account/ProfilePage"; 
 import AddModulePage from "./pages/modules/AddModulePage";
 import MyModulesPage from "./pages/modules/MyModulesPage";
-import SavedModulesPage from "./pages/modules/SavedModulesPage";
+import FavoriteModulesPage from "./pages/modules/FavoriteModulesPage";
 import ModulePage from "./pages/modules/ModulePage";
 import EditModulePage from "./pages/modules/EditModulePage";
 
@@ -31,7 +31,7 @@ export default function App() {
           <Route path="/modules/add" element={<AddModulePage />} />
           <Route path="/modules/edit" element={<EditModulePage />} />
           <Route path="/modules/my" element={<MyModulesPage />} />
-          <Route path="/modules/saved" element={<SavedModulesPage />} />
+          <Route path="/modules/favorites" element={<FavoriteModulesPage />} />
           
           <Route path="*" element={<BoardPage />} />
         </Routes>

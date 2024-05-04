@@ -31,6 +31,13 @@ namespace Backend.Storage
             new Card() {Id = 7, ModuleId = 3, Term="3", Definition=""},
         };
 
+        private static List<FavoriteModule> FavoriteModules = new List<FavoriteModule>()
+        {
+            new FavoriteModule() {Id = 0, UserId = 1, ModuleId = 1},
+            new FavoriteModule() {Id = 1, UserId = 1, ModuleId = 3},
+            new FavoriteModule() {Id = 2, UserId = 0, ModuleId = 3},
+        };
+
         public static User? GetUser(string name, string password)
         {
             return Users.FirstOrDefault(p => p.Name == name && p.Password == password);
@@ -103,9 +110,9 @@ namespace Backend.Storage
                     select module).ToList();
         }
 
-        public static Module? GetModule(int modelId)
+        public static Module? GetModule(int moduleId)
         {
-            return Modules.FirstOrDefault(module => module.Id == modelId);
+            return Modules.FirstOrDefault(module => module.Id == moduleId);
         }
 
         public static List<Card> GetCards(int moduleId)
@@ -135,6 +142,13 @@ namespace Backend.Storage
             {
                 Cards.Remove(card);
             }
+        }
+
+        public static List<FavoriteModule> GetFavoriteModules(int userId)
+        {
+            return (from module in FavoriteModules
+                    where module.UserId == userId
+                    select module).ToList();
         }
     }
 }

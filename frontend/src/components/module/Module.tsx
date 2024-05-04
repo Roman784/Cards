@@ -6,8 +6,8 @@ import Card from 'react-bootstrap/Card';
 import StarCheckbox from '../StarCheckbox';
 import "./Module.css"
 
-export default function Module({id, title}: {id: number, title: string}) {
-  const [checked, setChecked] = useState(false);
+export default function Module({id, title, isFavorite}: {id: number, title: string, isFavorite: boolean}) {
+  const [checked, setChecked] = useState(isFavorite);
 
   const navigate = useNavigate();
 

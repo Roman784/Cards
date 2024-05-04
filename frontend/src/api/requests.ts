@@ -10,6 +10,7 @@ export const MODULE = "https://localhost:7010/module";
 export const DELETE_MODULE = "https://localhost:7010/modules/delete";
 export const EDIT_MODULE = "https://localhost:7010/modules/edit";
 export const ADD_MODULE = "https://localhost:7010/modules/add";
+export const FAVORITE_MODULES = "https://localhost:7010/modules/favorites";
 
 export async function login(name: string, password: string) { 
     return await axios.post(LOGIN, {
@@ -91,6 +92,16 @@ export async function addModule(title: string, access: number, cards: CardType[]
         cards: cards
     },
     {
+        headers: {
+            Accept: "application/json",
+            "Authorization": "Bearer " + user.accessToken
+        },
+    });
+}
+
+export async function getFavoriteModules(user: UserType) {
+    const request = FAVORITE_MODULES + "?userId=" + user.id;
+    return await axios.get(request, {
         headers: {
             Accept: "application/json",
             "Authorization": "Bearer " + user.accessToken

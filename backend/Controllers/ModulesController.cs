@@ -116,6 +116,31 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
+        [HttpGet, Route("/modules/favorites"), EnableCors("Local"), Authorize]
+        public IActionResult GetFavoriteModules(int userId)
+        {
+            try
+            {
+                if (userId < 0)
+                    return NotFound("Modules not found");
+
+                List<FavoriteModule> favoriteModules = UsersContext.GetFavoriteModules(userId);
+
+                List<Module> modules = new List<Module>();
+
+                foreach (FavoriteModule favoriteModule in favoriteModules)
+                {
+                    Module module = UsersContext.GetModule(favoriteModule.ModuleId);
+
+                    if (module!= null && (module.Access == 1 || module.UserId == userId))
+                        modules.Add(module);
+                }
+
+                return Ok(modules);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
         public class AddModuleData : Module
         {
             public List<Card>? Cards { get; set; }
