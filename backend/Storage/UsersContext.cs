@@ -194,5 +194,50 @@ namespace Backend.Storage
                     orderby new DateTime(activity.Year, activity.Month, activity.Day) descending
                     select activity).ToList();
         }
+
+        public static Activity? GetActivity(int userId, int year, int month, int day)
+        {
+            Activity? activity = Activities.FirstOrDefault(a =>
+                a.UserId == userId &&
+                a.Year == year &&
+                a.Month == month &&
+                a.Day == day);
+
+            return activity;
+        }
+
+        public static Activity AddActivity(int userId, int year, int month, int day, int studyTime)
+        {
+            int id = Activities.Max(a => a.Id) + 1;
+
+            Activity activity = new Activity() 
+            {
+                Id= id,
+                UserId = userId,
+                Year = year,
+                Month = month,
+                Day = day,
+                StudyTime = studyTime
+            };
+
+            Activities.Add(activity);
+
+            return activity;
+        }
+
+        public static bool UpdateActivity(int userId, int year, int month, int day, int studyTime)
+        {
+            Activity? activity = Activities.FirstOrDefault(a => 
+                a.UserId == userId && 
+                a.Year == year && 
+                a.Month == month && 
+                a.Day == day);
+
+            if (activity == null) return false;
+
+            activity.StudyTime = studyTime;
+
+            return true;
+        }
     }
 }

@@ -13,6 +13,8 @@ export const ADD_MODULE = "https://localhost:7010/modules/add";
 export const FAVORITE_MODULES = "https://localhost:7010/modules/favorites";
 export const SET_FAVORITE_MODULES = "https://localhost:7010/modules/favorites/set";
 export const ACTIVITIES = "https://localhost:7010/activities";
+export const GET_ACTIVITY = "https://localhost:7010/activities/get";
+export const UPDATE_ACTIVITY = "https://localhost:7010/activities/update";
 
 export async function login(name: string, password: string) { 
     return await axios.post(LOGIN, {
@@ -124,6 +126,26 @@ export async function setFavoriteModules(user: UserType, moduleId: number, value
 export async function getActivities(user: UserType) {
     const request = ACTIVITIES + "?userId=" + user.id;
     return await axios.get(request, {
+        headers: {
+            Accept: "application/json",
+            "Authorization": "Bearer " + user.accessToken
+        },
+    });
+}
+
+export async function getActivity(user: UserType, year: number, month: number, day: number) {
+    const request = GET_ACTIVITY + "?userId=" + user.id + "&year=" + year + "&month=" + month + "&day=" + day
+    return await axios.get(request, {
+        headers: {
+            Accept: "application/json",
+            "Authorization": "Bearer " + user.accessToken
+        },
+    });
+}
+
+export async function updateActivity(user: UserType, year: number, month: number, day: number, studyTime: number) {
+    const request = UPDATE_ACTIVITY + "?userId=" + user.id + "&year=" + year + "&month=" + month + "&day=" + day + "&studyTime=" + studyTime;
+    return await axios.put(request, {}, {
         headers: {
             Accept: "application/json",
             "Authorization": "Bearer " + user.accessToken

@@ -1,15 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 
+import UserType from '../../Types/UserType';
 import CardType from "../../Types/CardType";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import StudyCard from "./StudyCard";
 import "./StudyModule.css"
+import { getActivity, updateActivity } from "../../api/requests";
 
 export default function StudyModule({cards}: {cards: CardType[]}) {
   const [cardIndex, setCardIndex] = useState<number>(0);
   const [isCardFlipped, setIsCardFlipped] = useState<boolean>(false);
+
+  const user = useSelector<any, UserType>(state => state.user);
+
+  let studyTime: number = 0;
+
+  useEffect(() => {
+    loadActivity();
+  }, []);
+
+  function loadActivity() {
+    getActivity(user, getDate().year, getDate().month, getDate().day)
+    .then((response) => {
+      studyTime = response.data.studyTime;
+      startActivityCount();
+    });
+  }
+
+  function updateStudyTime(time: number) {
+    updateActivity(user, getDate().year, getDate().month, getDate().day, time);
+  }
+
+  function startActivityCount() {
+    const interval = setInterval(() => {
+      studyTime += 1;
+      updateStudyTime(studyTime);
+    }, 60000);
+    return () => clearInterval(interval);
+  }
+
+  function getDate() {
+    const today = new Date();
+    const day = today.getDate();
+    const month = today.getMonth()+1;
+    const year = today.getFullYear();
+
+    return {year, month, day}
+  }
 
   function changeCard(step: number) {
     let index: number = cardIndex + step;
