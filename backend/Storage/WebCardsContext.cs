@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend;
+namespace backend.Storage;
 
 public partial class WebCardsContext : DbContext
 {

@@ -1,3 +1,4 @@
+using backend.Storage;
 using Backend;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -10,8 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Добавляем сервис базф данных.
-//builder.Services.AddDbContext<BeerRangeContext>();
+// Добавляем сервис базы данных.
+builder.Services.AddDbContext<WebCardsContext>();
 
 // Добавляем сервисы CORS.
 builder.Services.AddCors(options =>
