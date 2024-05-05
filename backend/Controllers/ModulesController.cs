@@ -1,6 +1,4 @@
-﻿using backend.Models;
-using Backend.Models;
-using Backend.Storage;
+﻿using Backend.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +10,7 @@ namespace backend.Controllers
     [ApiController]
     public class ModulesController : ControllerBase
     {
-        [HttpGet, Route("/modules"), EnableCors("Local"), Authorize]
+        /*[HttpGet, Route("/modules"), EnableCors("Local"), Authorize]
         public IActionResult GetModules(int userId)
         {
             try
@@ -207,6 +205,6 @@ namespace backend.Controllers
         public class AddModuleData : Module
         {
             public List<Card>? Cards { get; set; }
-        }
+        }*/
     }
 }

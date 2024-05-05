@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Backend.Models;
 using Backend.Storage;
 
 namespace Backend.Controllers
@@ -8,7 +7,7 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        [HttpPost, Route("/login"), EnableCors("Local")]
+        /*[HttpPost, Route("/login"), EnableCors("Local")]
         public IActionResult LogIn(User loginData)
         {
             try
@@ -63,6 +62,6 @@ namespace Backend.Controllers
                 return Ok(response);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
-        }
+        }*/
     }
 }

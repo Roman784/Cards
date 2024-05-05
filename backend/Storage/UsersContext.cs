@@ -1,9 +1,7 @@
-﻿using backend.Models;
-using Backend.Models;
-
+﻿
 namespace Backend.Storage
 {
-    public static class UsersContext
+    /*public static class UsersContext
     {
         private static List<User> Users = new List<User>
         {
@@ -239,5 +237,5 @@ namespace Backend.Storage
 
             return true;
         }
-    }
+    }*/
 }
