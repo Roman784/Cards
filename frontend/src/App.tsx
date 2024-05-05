@@ -11,15 +11,14 @@ import ModulePage from "./pages/modules/ModulePage";
 import EditModulePage from "./pages/modules/EditModulePage";
 
 import Header from "./components/header/Header";
-
-import "./styles/App.css";
+import "./App.css";
 
 export default function App() {
   return (
     <>
       <Header />
 
-      <main className="content" style={{marginBottom: "300px"}}>
+      <main className="content">
         <Routes>
           <Route path="/" element={<BoardPage />} />
           <Route path="/board" element={<BoardPage />} />

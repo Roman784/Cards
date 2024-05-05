@@ -8,7 +8,7 @@ import UserType from "../../Types/UserType";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
-import StarCheckbox from "../../components/StarCheckbox";
+import StarCheckbox from "../../components/checkbox/StarCheckbox";
 import DemonstrationCard from "../../components/module/DemonstrationCard";
 import StudyModule from "../../components/studyModule/StudyModule";
 import "./Modules.css"

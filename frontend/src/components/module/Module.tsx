@@ -6,7 +6,7 @@ import UserType from '../../Types/UserType';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card';
-import StarCheckbox from '../StarCheckbox';
+import StarCheckbox from '../checkbox/StarCheckbox';
 import "./Module.css"
 
 export default function Module({id, title, isFavoriteModule}: {id: number, title: string, isFavoriteModule: boolean}) {
