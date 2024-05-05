@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import UserType from '../../Types/UserType';
 import CardType from '../../Types/CardType';
 
-import { EditableCard } from '../../components/module/EditableCard';
+import { EditableCard } from '../cards/EditableCard';
 import "./Module.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css'

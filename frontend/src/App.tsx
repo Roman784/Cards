@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 
-import BoardPage from "./pages/BoardPage";
+import BoardPage from "./pages/modules/BoardPage";
 import LogInPage from "./pages/account/LogInPage";
 import SignUpPage from "./pages/account/SignUpPage";
 import ProfilePage from "./pages/account/ProfilePage"; 
-import AddModulePage from "./pages/modules/AddModulePage";
+import AddModulePage from "./pages/moduleEditors/AddModulePage";
 import MyModulesPage from "./pages/modules/MyModulesPage";
 import FavoriteModulesPage from "./pages/modules/FavoriteModulesPage";
 import ModulePage from "./pages/modules/ModulePage";
-import EditModulePage from "./pages/modules/EditModulePage";
+import EditModulePage from "./pages/moduleEditors/EditModulePage";
 
 import Header from "./components/header/Header";
 import "./App.css";

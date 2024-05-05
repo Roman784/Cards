@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import "./Cards.css";
 
 export function EditableCard({ id, term, definition }: { id: number; term: string; definition: string; }) {
   const [form, setForm] = useState({
@@ -28,7 +29,7 @@ export function EditableCard({ id, term, definition }: { id: number; term: strin
   };
 
   return (
-    <Card body className="module-card1">
+    <Card body className="card">
       <Form.Control type="text" placeholder="Term" value={form.term} onChange={(e) => setForm(prev => ({ ...prev, term: e.target.value }))} />
       <p />
       <Form.Control type="text" placeholder="Definition" value={form.definition} onChange={(e) => setForm(prev => ({ ...prev, definition: e.target.value }))} />

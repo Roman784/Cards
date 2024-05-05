@@ -9,9 +9,9 @@ import UserType from "../../Types/UserType";
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import StarCheckbox from "../../components/checkbox/StarCheckbox";
-import DemonstrationCard from "../../components/module/DemonstrationCard";
+import DemonstrationCard from "../../components/cards/DemonstrationCard";
 import StudyModule from "../../components/studyModule/StudyModule";
-import "./Modules.css"
+import "./ModulePage.css"
 
 export default function ModulePage() {
   const [title, setTitle] = useState<string>("");
@@ -34,6 +34,7 @@ export default function ModulePage() {
     loadModule();
   }, []);
 
+  // Загрузка информации о модуле.
   function loadModule() {
     getModule(moduleId, user)
     .then((response) => {
@@ -46,18 +47,19 @@ export default function ModulePage() {
           definition: card.definition
         });
       });
-
+      
+      // Устанавливаем значения.
       setTitle(response.data.title);
+      setIsFavorite(location.state.isFavoriteModule);
       setAuthorId(response.data.authorId);
       setCards(tempCards);
-      
-      setIsFavorite(location.state.isFavoriteModule);
     })
     .catch(() => {
       navigate("/modules/my");
     });
   } 
 
+  // Добавление модуля в избранное.
   const handleIsFavoriteChange = (event: any) => {
     const value = event.target.checked
     
@@ -68,6 +70,7 @@ export default function ModulePage() {
     });
   }
 
+  // Изменение открытого модуля.
   const handleEdit = () => {
     navigate("/modules/edit", {
       state: {
@@ -76,6 +79,7 @@ export default function ModulePage() {
     });
   }
 
+  // Удаление текущего модуля.
   const handleDelete = () => {
     deleteModule(moduleId, user)
     .then(() => {

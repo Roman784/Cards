@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 import StarCheckbox from '../checkbox/StarCheckbox';
 import "./Module.css"
 
-export default function Module({id, title, isFavoriteModule}: {id: number, title: string, isFavoriteModule: boolean}) {
+export default function DemonstrationModuleCard({id, title, isFavoriteModule}: {id: number, title: string, isFavoriteModule: boolean}) {
   const [isFavorite, setIsFavorite] = useState<boolean>(isFavoriteModule);
 
   const user = useSelector<any, UserType>(state => state.user);
@@ -24,7 +24,7 @@ export default function Module({id, title, isFavoriteModule}: {id: number, title
       setIsFavorite(value);
     });
   }
-
+  
   const openModule = (event : any) => {
     event.preventDefault();
 

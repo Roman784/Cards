@@ -1,5 +1,5 @@
-import ModuleList from "../components/module/ModuleList";
-import { MODULES } from "../api/requests";
+import ModuleList from "../../components/module/ModuleList";
+import { MODULES } from "../../api/requests";
 
 export default function BoardPage() {
   return (
