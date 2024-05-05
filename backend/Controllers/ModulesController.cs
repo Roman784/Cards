@@ -156,6 +156,21 @@ namespace backend.Controllers
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
+        [HttpGet, Route("/activities"), EnableCors("Local"), Authorize]
+        public IActionResult GetActivities(int userId)
+        {
+            try
+            {
+                if (userId < 0)
+                    return NotFound("Activities not found");
+
+                List<Activity> activities = UsersContext.GetActivities(userId);
+
+                return Ok(activities);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
+
         public class AddModuleData : Module
         {
             public List<Card>? Cards { get; set; }

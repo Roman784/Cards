@@ -38,6 +38,19 @@ namespace Backend.Storage
             new FavoriteModule() {Id = 2, UserId = 0, ModuleId = 3},
         };
 
+        private static List<Activity> Activities = new List<Activity>()
+        {
+            new Activity() {Id = 0, UserId = 1, Year = 2024, Month = 5, Day = 4, StudyTime = 10},
+            new Activity() {Id = 1, UserId = 1, Year = 2024, Month = 5, Day = 3, StudyTime = 15},
+            new Activity() {Id = 2, UserId = 1, Year = 2024, Month = 5, Day = 2, StudyTime = 5},
+            new Activity() {Id = 3, UserId = 1, Year = 2024, Month = 5, Day = 1, StudyTime = 10},
+            new Activity() {Id = 4, UserId = 1, Year = 2024, Month = 4, Day = 30, StudyTime = 30},
+            new Activity() {Id = 5, UserId = 1, Year = 2024, Month = 4, Day = 29, StudyTime = 15},
+            new Activity() {Id = 6, UserId = 1, Year = 2024, Month = 4, Day = 28, StudyTime = 10},
+            new Activity() {Id = 7, UserId = 1, Year = 2024, Month = 4, Day = 27, StudyTime = 5},
+            new Activity() {Id = 8, UserId = 1, Year = 2024, Month = 4, Day = 26, StudyTime = 1},
+        };
+
         public static User? GetUser(string name, string password)
         {
             return Users.FirstOrDefault(p => p.Name == name && p.Password == password);
@@ -172,6 +185,14 @@ namespace Backend.Storage
             if (module == null) return;
 
             FavoriteModules.Remove(module);
+        }
+
+        public static List<Activity> GetActivities(int userId)
+        {
+            return (from activity in Activities
+                    where activity.UserId == userId
+                    orderby new DateTime(activity.Year, activity.Month, activity.Day) descending
+                    select activity).ToList();
         }
     }
 }

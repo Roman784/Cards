@@ -1,0 +1,18 @@
+.activity {
+    margin: 1rem auto;
+    text-align: center;
+    width: 30rem;
+}
+
+.activity-cell {
+    margin: auto;
+    text-align: center;
+    height: 2rem;
+    width: 2rem;
+    user-select: none;
+}
+
+.log-out-btn {
+    margin-right: auto;
+    margin-left: 1rem;
+}
