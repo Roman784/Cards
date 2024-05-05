@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
-import "./AuthForm.css";
 
 export default function LogInPage() {
   const [name, setName] = useState<string>("");
@@ -61,21 +60,25 @@ export default function LogInPage() {
 
         <h3 className="title">Login</h3>
 
+        {/* Имя. */}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
         </Form.Group>
 
+        {/* Пароль. */}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </Form.Group>
 
-        {errorMessage.length > 0 && <Alert key="danger" variant="danger">
-          {errorMessage.map(error => (<li key={error}>{error}</li>))}
-        </Alert> }
-
-        <div className="btn-container">
-          <Button className="submit-btn" variant="primary" type="submit">Log in</Button>
-          <Button className="link-btn" variant="link" onClick={() => navigate("/signup")}>Sign up</Button>
+        {/* Сообщения об ошибках. */}
+        {errorMessage.length > 0 && 
+          <Alert key="danger" variant="danger">
+            {errorMessage.map(error => (<li key={error}>{error}</li>))}
+          </Alert>}
+        
+        <div className="auth-btn-container">
+          <Button className="auth-submit-btn" variant="primary" type="submit">Log in</Button>
+          <Button className="auth-another-form-btn" variant="link" onClick={() => navigate("/signup")}>Sign up</Button>
         </div>
       </Form>
     </>

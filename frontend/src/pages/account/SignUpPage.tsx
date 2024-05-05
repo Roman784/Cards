@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
-import "./AuthForm.css";
 
 export default function SignUpPage() {
   const [name, setName] = useState("");
@@ -63,25 +62,29 @@ export default function SignUpPage() {
 
         <h3 className="title">Signup</h3>
 
+        {/* Имя. */}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control type="text" placeholder="Name" name="name" value={name} onChange={(event) => setName(event.target.value)} />
         </Form.Group>
 
+        {/* Пароль */}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control type="password" placeholder="Password" name="password" value={password} onChange={(event) => setPassword(event.target.value)} />
         </Form.Group>
 
+        {/* Подтверждение пароля. */}
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Control type="password" placeholder="Confirm password" name="password" value={confirmPassword} onChange={(event) => setConfirmPassword(event.target.value)} />
         </Form.Group>
 
+        {/* Сообщения об ошибках. */}
         {errorMessage.length > 0 && <Alert key="danger" variant="danger">
           {errorMessage.map(error => (<li key={error}>{error}</li>))}
         </Alert> }
 
-        <div className="btn-container">
-          <Button className="submit-btn" variant="primary" type="submit">Sign up</Button>
-          <Button className="link-btn" variant="link" onClick={() => navigate("/login")}>Log in</Button>
+        <div className="auth-btn-container">
+          <Button className="auth-submit-btn" variant="primary" type="submit">Sign up</Button>
+          <Button className="auth-another-form-btn" variant="link" onClick={() => navigate("/login")}>Log in</Button>
         </div>
       </Form>
     </>

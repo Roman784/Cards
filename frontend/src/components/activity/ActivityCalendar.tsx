@@ -15,63 +15,6 @@ export default function ActivityCalendar({activities}: {activities : ActivityTyp
   
   const daysOfWeek: string[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
-  // const activities: ActivityType[] = [
-  //   {
-  //     day: 4,
-  //     month: 5,
-  //     year: 2024,
-  //     studyTime: 0
-  //   },
-  //   {
-  //     day: 3,
-  //     month: 5,
-  //     year: 2024,
-  //     studyTime: 1
-  //   },
-  //   {
-  //     day: 2,
-  //     month: 5,
-  //     year: 2024,
-  //     studyTime: 4
-  //   },
-  //   {
-  //     day: 1,
-  //     month: 5,
-  //     year: 2024,
-  //     studyTime: 5
-  //   },
-  //   {
-  //     day: 30,
-  //     month: 4,
-  //     year: 2024,
-  //     studyTime: 8
-  //   },
-  //   {
-  //     day: 29,
-  //     month: 4,
-  //     year: 2024,
-  //     studyTime: 10
-  //   },
-  //   {
-  //     day: 28,
-  //     month: 4,
-  //     year: 2024,
-  //     studyTime: 16
-  //   },
-  //   {
-  //     day: 27,
-  //     month: 4,
-  //     year: 2024,
-  //     studyTime: 29
-  //   },
-  //   {
-  //     day: 26,
-  //     month: 4,
-  //     year: 2024,
-  //     studyTime: 30
-  //   }
-  // ];
-
   useEffect(() => {
     // Находим число строк у таблицы.
     let rows: number = 1;

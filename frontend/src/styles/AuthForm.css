@@ -1,16 +1,12 @@
-.title {
-    margin-bottom: 30px;
-}
-
-.btn-container {
+.auth-btn-container {
     margin-top: 20px;
 }
 
-.submit-btn {
+.auth-submit-btn {
     width: 110px;
 }
 
-.link-btn {
+.auth-another-form-btn {
     padding: 0.5rem;
     margin-left: 0.5rem;
 }

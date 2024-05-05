@@ -4,20 +4,19 @@ import { logOut } from "../../store/userSlice";
 
 import UserType from "../../Types/UserType";
 
-import logo from "/logo.svg"
-import "./Header.css";
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import logo from "/logo.svg"
 
 export default function Header() {
   const user = useSelector<any, UserType>(state => state.user);
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
+  // Выход из аккаунта.
   const logout = () => {
     dispatch(logOut());
     navigate("/login");
@@ -27,17 +26,21 @@ export default function Header() {
     <header>
       <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
         <Container>
-          <div className="logo-container">
+
+          {/* Название сайта. */}
+          <div className="header-title-container">
             <img src={logo} alt="WebCards" width="40px" />
             <Navbar.Brand as={Link} to="/">WebCards</Navbar.Brand>
           </div>
 
+          {/* Контент заголовка. */}
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
 
               <Nav.Link as={Link} to="/board">Board</Nav.Link>
               
+              {/* Выпадающий список. */}
               <NavDropdown title="Modules" id="collapsible-nav-dropdown">
 								<NavDropdown.Item as={Link} to="/modules/add">Add</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="/modules/my">My</NavDropdown.Item>
@@ -46,6 +49,7 @@ export default function Header() {
 
             </Nav>
 
+            {/* Профиль. */}
             <Nav>
               <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
 
