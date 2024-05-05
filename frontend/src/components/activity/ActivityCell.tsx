@@ -6,22 +6,22 @@ import Tooltip from 'react-bootstrap/Tooltip';
 export default function ActivityCell({studyTime}: {studyTime: number}) {
   const colorByStudyTimes = new Map<number, string>();
 
+  // Цвет ячейки от времени обучения.
   colorByStudyTimes.set(1, "#b0d0ff");
   colorByStudyTimes.set(5, "#88b8ff");
   colorByStudyTimes.set(10, "#589cff");
   colorByStudyTimes.set(15, "#3586ff");
   colorByStudyTimes.set(30, "#0d6efd");
 
+  // Возвращает подходящий цвет ячейки.
   function getColor() {
     let color: string = "";
 
     for (const [key, value] of colorByStudyTimes) {
-      if (studyTime >= key)
-        color = value;
-      else
-        break;
+      if (studyTime >= key) color = value;
+      else break;
     }
-
+    
     return color;
   }
 

@@ -13,8 +13,6 @@ import EditModulePage from "./pages/modules/EditModulePage";
 import Header from "./components/header/Header";
 
 import "./styles/App.css";
-import "./styles/Header.css";
-import "./styles/AuthForm.css";
 
 export default function App() {
   return (
