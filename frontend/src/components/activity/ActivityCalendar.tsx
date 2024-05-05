@@ -73,11 +73,6 @@ export default function ActivityCalendar({activities}: {activities : ActivityTyp
   // ];
 
   useEffect(() => {
-    // const day = today.getDate();
-    // const month = today.getMonth()+1;
-    // const year = today.getFullYear();
-    // const dayNumber = today.getDay();
-
     // Находим число строк у таблицы.
     let rows: number = 1;
     activities.forEach(activity => {
@@ -118,7 +113,7 @@ export default function ActivityCalendar({activities}: {activities : ActivityTyp
   return (
     <>
       <h5>Activity</h5>
-
+      
       <Table>
 
         {/* Заголовок - дни недели. */}

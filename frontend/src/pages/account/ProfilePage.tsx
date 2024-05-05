@@ -54,10 +54,12 @@ export default function ProfilePage() {
         <Button className="log-out-btn" variant="outline-primary" onClick={logout}>Log out</Button>
       </div>
 
-      {activities.length > 0 &&
-        <div className="activity">
-          <ActivityCalendar activities={activities}/>
-        </div>}
+      <div className="activity">
+        {activities.length > 0 &&
+          <ActivityCalendar activities={activities}/>}
+        {activities.length === 0 && 
+          <span>You haven't studied anything yet.</span>}
+      </div>
     </>
   );
 }

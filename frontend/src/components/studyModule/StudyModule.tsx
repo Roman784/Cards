@@ -64,7 +64,7 @@ export default function StudyModule({cards}: {cards: CardType[]}) {
   return (
     <>
       {cards.length <= 0 &&
-        <span>Нет карточек...</span>}
+        <span>No cards...</span>}
 
       {cards.length > 0 &&
         <div>
