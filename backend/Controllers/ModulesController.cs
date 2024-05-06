@@ -155,7 +155,7 @@ namespace backend.Controllers
         }
 
         // Добавляет новый модуль.
-        [HttpPut, Route("/modules/add"), EnableCors("Local"), Authorize]
+        [HttpPost, Route("/modules/add"), EnableCors("Local"), Authorize]
         public async Task<IActionResult> AddModule(RequestedModuleData moduleData)
         {
             try

@@ -90,7 +90,7 @@ export async function editModule(moduleId: number, title: string, access: number
 }
 
 export async function addModule(title: string, access: number, cards: CardType[], user: UserType) {
-    return await axios.put(ADD_MODULE, {
+    return await axios.post(ADD_MODULE, {
         userId: user.id,
         title: title,
         access: access,

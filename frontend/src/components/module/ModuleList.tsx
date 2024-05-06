@@ -7,9 +7,11 @@ import UserType from "../../Types/UserType";
 import DemonstrationModuleCard from "./DemonstrationModuleCard";
 import ModuleFaceType from "../../Types/ModuleFaceType";
 import { getFavoriteModuleIds, getModules } from "../../api/requests";
+import Snipper from "../snipper/Spinner";
 
 export default function ModuleList({requestUrl} : {requestUrl: string}) {
   const [modules, setModules] = useState<ModuleFaceType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const user = useSelector<any, UserType>(state => state.user);
   const navigate = useNavigate();
@@ -23,6 +25,8 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
   }, []);
 
   async function loadModules() {
+    setIsLoading(true);
+
     // Получаем список сохранённых модулей.
     let favoriteModuleIds: number[] = [];
     await getFavoriteModuleIds(user)
@@ -46,14 +50,20 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
       });
 
       setModules(tempModules);
+      
+      setIsLoading(false);
     });
   }
 
   return (
     <>
-      {modules.length > 0 && modules.map((module: ModuleFaceType, index) => (
-        <DemonstrationModuleCard key={index} id={module.id} title={module.title} isFavoriteModule={module.isFavorite} />
-      ))}
+      {isLoading && <Snipper />}
+
+      {!isLoading && 
+        <>{modules.length > 0 && modules.map((module: ModuleFaceType, index) => (
+          <DemonstrationModuleCard key={index} id={module.id} title={module.title} isFavoriteModule={module.isFavorite} />
+        ))}
+      </>}
     </>
   );
 }
