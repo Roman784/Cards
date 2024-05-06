@@ -18,12 +18,12 @@ namespace Backend.Controllers
         }
 
         [HttpPost, Route("/login"), EnableCors("Local")]
-        public IActionResult LogIn(RequestedUserData loginData)
+        public async Task<IActionResult> LogIn(RequestedUserData loginData)
         {
             try
             {
                 // Проверяем пользователя на наличие в базе данных.
-                User? user = _repository.GetUser(loginData.Name, loginData.Password);
+                User? user = await _repository.GetUser(loginData.Name, loginData.Password);
 
                 if (user is null)
                     return Unauthorized(new { message = "User not found." });
@@ -45,18 +45,18 @@ namespace Backend.Controllers
         }
 
         [HttpPut, Route("/signup"), EnableCors("Local")]
-        public IActionResult SignUp(RequestedUserData registrationData)
+        public async Task<IActionResult> SignUp(RequestedUserData registrationData)
         {
             try
             {
                 // Проверяем пользователя на уникальность.
-                User? existingUser = _repository.GetUser(registrationData.Name);
+                User? existingUser = await _repository.GetUser(registrationData.Name);
 
                 if (existingUser != null)
                     return Conflict(new { message = "User already exists." });
 
                 // Добавляем новго пользователя в БД.
-                User newUser = _repository.AddUser(registrationData.Name, registrationData.Password);
+                User newUser = await _repository.AddUser(registrationData.Name, registrationData.Password);
 
                 // Генерируем токен.
                 string encodedJwt = JwtService.GenerateToken(newUser.Name);

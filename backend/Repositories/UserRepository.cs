@@ -10,22 +10,22 @@ namespace backend.Repositories
         {
         }
 
-        public User? GetUser(string name, string password)
+        public async Task<User?> GetUser(string name, string password)
         {
-            return DbContext.Users.FirstOrDefault(p => p.Name == name && p.Password == password);
+            return await DbContext.Users.FirstOrDefaultAsync(p => p.Name == name && p.Password == password);
         }
 
-        public User? GetUser(string name)
+        public async Task<User?> GetUser(string name)
         {
-            return DbContext.Users.FirstOrDefault(u => u.Name == name);
+            return await DbContext.Users.FirstOrDefaultAsync(u => u.Name == name);
         }
 
-        public User AddUser(string name, string password)
+        public async Task<User> AddUser(string name, string password)
         {
             User newUser = new User() { Name = name, Password = password };
 
-            DbContext.Add(newUser);
-            DbContext.SaveChanges();
+            await DbContext.AddAsync(newUser);
+            await DbContext.SaveChangesAsync();
 
             return newUser;
         }
