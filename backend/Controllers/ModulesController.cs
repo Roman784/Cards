@@ -221,54 +221,5 @@ namespace backend.Controllers
 
             public string? Definition { get; set; } = "";
         }
-        
-
-        /*[HttpGet, Route("/activities"), EnableCors("Local"), Authorize]
-        public IActionResult GetActivities(int userId)
-        {
-            try
-            {
-                if (userId < 0)
-                    return NotFound("Activities not found");
-
-                List<Activity> activities = UsersContext.GetActivities(userId);
-
-                return Ok(activities);
-            }
-            catch (Exception e) { return StatusCode(500, e.Message); }
-        }
-
-        [HttpGet, Route("/activities/get"), EnableCors("Local"), Authorize]
-        public IActionResult GetActivity(int userId, int year, int month, int day)
-        {
-            try
-            {
-                Activity? activity = UsersContext.GetActivity(userId, year, month, day);
-
-                if (activity == null)
-                    activity = UsersContext.AddActivity(userId, year, month, day, 0);
-
-                return Ok(activity);
-            }
-            catch (Exception e) { return StatusCode(500, e.Message); }
-        }
-
-        [HttpPut, Route("/activities/update"), EnableCors("Local"), Authorize]
-        public IActionResult UpdateActivities(int userId, int year, int month, int day, int studyTime)
-        {
-            try
-            {
-                if (userId < 0)
-                    return NotFound("Activities not found");
-
-                bool result = UsersContext.UpdateActivity(userId, year, month, day, studyTime);
-
-                if (!result)
-                    UsersContext.AddActivity(userId, year, month, day, studyTime);
-
-                return Ok();
-            }
-            catch (Exception e) { return StatusCode(500, e.Message); }
-        }*/
     }
 }

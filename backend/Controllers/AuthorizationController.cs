@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Backend.Storage;
 using backend.Models;
 using backend.Repositories;
 using backend.Storage;
