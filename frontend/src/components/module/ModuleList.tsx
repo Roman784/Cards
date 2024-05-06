@@ -6,7 +6,7 @@ import UserType from "../../Types/UserType";
 
 import DemonstrationModuleCard from "./DemonstrationModuleCard";
 import ModuleFaceType from "../../Types/ModuleFaceType";
-import { getFavoriteModules, getModules } from "../../api/requests";
+import { getFavoriteModuleIds, getModules } from "../../api/requests";
 
 export default function ModuleList({requestUrl} : {requestUrl: string}) {
   const [modules, setModules] = useState<ModuleFaceType[]>([]);
@@ -24,11 +24,11 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
 
   async function loadModules() {
     // Получаем список сохранённых модулей.
-    let favoriteModulesId: number[] = [];
-    await getFavoriteModules(user)
+    let favoriteModuleIds: number[] = [];
+    await getFavoriteModuleIds(user)
     .then((response) => {
-      response.data.forEach((module: any) => {
-        favoriteModulesId.push(module.id);
+      response.data.forEach((id: any) => {
+        favoriteModuleIds.push(id);
       });
     });
 
@@ -41,7 +41,7 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
         tempModules.push({
           id: module.id,
           title: module.title,
-          isFavorite: favoriteModulesId.includes(module.id)
+          isFavorite: favoriteModuleIds.includes(module.id)
         });
       });
 
@@ -51,8 +51,8 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
 
   return (
     <>
-      {modules.length > 0 && modules.map((module: ModuleFaceType) => (
-        <DemonstrationModuleCard key={module.id} id={module.id} title={module.title} isFavoriteModule={module.isFavorite} />
+      {modules.length > 0 && modules.map((module: ModuleFaceType, index) => (
+        <DemonstrationModuleCard key={index} id={module.id} title={module.title} isFavoriteModule={module.isFavorite} />
       ))}
     </>
   );

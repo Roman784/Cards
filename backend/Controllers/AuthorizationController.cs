@@ -10,11 +10,11 @@ namespace Backend.Controllers
     [ApiController]
     public class AuthorizationController : ControllerBase
     {
-        private readonly WebCardsContext _dbContext;
+        private readonly UserRepository _repository;
 
         public AuthorizationController(WebCardsContext dbContext)
         {
-            _dbContext = dbContext;
+            _repository = new UserRepository(dbContext);
         }
 
         [HttpPost, Route("/login"), EnableCors("Local")]
@@ -22,10 +22,8 @@ namespace Backend.Controllers
         {
             try
             {
-                UserRepository repository = new UserRepository(_dbContext);
-
                 // Проверяем пользователя на наличие в базе данных.
-                User? user = repository.GetUser(loginData.Name, loginData.Password);
+                User? user = _repository.GetUser(loginData.Name, loginData.Password);
 
                 if (user is null)
                     return Unauthorized(new { message = "User not found." });
@@ -51,16 +49,14 @@ namespace Backend.Controllers
         {
             try
             {
-                UserRepository repository = new UserRepository(_dbContext);
-
                 // Проверяем пользователя на уникальность.
-                User? existingUser = repository.GetUser(registrationData.Name);
+                User? existingUser = _repository.GetUser(registrationData.Name);
 
                 if (existingUser != null)
                     return Conflict(new { message = "User already exists." });
 
                 // Добавляем новго пользователя в БД.
-                User newUser = repository.AddUser(registrationData.Name, registrationData.Password);
+                User newUser = _repository.AddUser(registrationData.Name, registrationData.Password);
 
                 // Генерируем токен.
                 string encodedJwt = JwtService.GenerateToken(newUser.Name);

@@ -1,239 +1,274 @@
 ﻿using backend.Models;
+using backend.Repositories;
 using backend.Storage;
-using Backend.Storage;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 
 namespace backend.Controllers
 {
     [ApiController]
     public class ModulesController : ControllerBase
     {
-        private readonly WebCardsContext _webCardsContext;
+        private readonly ModulesRepository _repository;
 
         public ModulesController(WebCardsContext webCardsContext)
         {
-            _webCardsContext = webCardsContext;
+            _repository = new ModulesRepository(webCardsContext);
         }
 
-        [HttpGet, Route("/modules")]
-        public IActionResult GetModules(int userId)
+        // Все публичные модули + приватные текущего пользователя.
+        [HttpGet, Route("/modules"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> GetModules(long userId)
         {
             try
             {
-                StringBuilder builder = new StringBuilder();
+                // Проверяем правильность id.
+                if (userId < 0)
+                    return NotFound("Modules not found");
 
-                foreach(Module module in _webCardsContext.Modules)
-                {
-                    builder.Append(module.Title);
-                    Console.WriteLine(module.Title);
-                }
+                List<Module> modules = await _repository.GetModules(userId);
 
-                return Ok(builder.ToString());
+                return Ok(modules);
             }
             catch (Exception e) { return StatusCode(500, e.Message); }
         }
 
-       /*[HttpGet, Route("/modules"), EnableCors("Local"), Authorize]
-       public IActionResult GetModules(int userId)
-       {
-           try
-           {
-               List<Module> modules = UsersContext.GetModules(userId);
+        // Все модули текущего пользователя.
+        [HttpGet, Route("/modules/my"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> GetUserModules(long userId)
+        {
+            try
+            {
+                // Проверяем правильность id.
+                if (userId < 0)
+                    return NotFound("Modules not found");
 
-               return Ok(modules);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                List<Module> modules = await _repository.GetUserModules(userId);
 
-       [HttpGet, Route("/modules/my"), EnableCors("Local"), Authorize]
-       public IActionResult GetUserModules(int userId)
-       {
-           try
-           {
-               List<Module> modules = UsersContext.GetUserModules(userId);
+                return Ok(modules);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               return Ok(modules);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+        // Данные конкретного модуля.
+        [HttpGet, Route("/module"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> GetModule(long moduleId, long userId)
+        {
+            try
+            {
+                // Проверяем правильность id.
+                if (moduleId < 0 || userId < 0)
+                    return StatusCode(400, "Unacceptable id.");
 
-       [HttpPut, Route("/modules/add"), EnableCors("Local"), Authorize]
-       public IActionResult AddModule(AddModuleData moduleData)
-       {
-           try
-           {
-               if (moduleData == null || moduleData.Cards == null || moduleData.UserId < 0)
-                   return StatusCode(500, "Failed to create the module.");
+                Module? module = await _repository.GetModule(moduleId);
+                List<Card> cards = await _repository.GetCards(moduleId);
 
-               int moduleId = UsersContext.AddModule(moduleData.UserId, moduleData, moduleData.Cards);
+                // Конвертируем коллекцию карточек в подобаемый для отправки вид.
+                // Для избежения зацикливания.
+                List<RequestedCardData> cardsData = new List<RequestedCardData>();
+                foreach (Card card in cards) 
+                {
+                    cardsData.Add(new RequestedCardData() 
+                    { 
+                        Id = card.Id,
+                        Term =  card.Term, 
+                        Definition = card.Definition 
+                    });
+                }
 
-               return Ok(moduleId);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                // Проверяем модуль на существование.
+                if (module == null)
+                    return NotFound("Module not found.");
 
-       [HttpPut, Route("/modules/edit"), EnableCors("Local"), Authorize]
-       public IActionResult EditModule(AddModuleData moduleData)
-       {
-           try
-           {
-               if (moduleData == null || moduleData.Cards == null || moduleData.UserId < 0)
-                   return StatusCode(500, "Failed to create the module.");
+                var response = new
+                {
+                    title = module.Title,
+                    authorId = module.UserId,
+                    access = module.Access,
+                    cards = cardsData
+                };
+                return Ok(response);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               Module? module = UsersContext.GetModule(moduleData.Id);
+        // Id избранных модулей текущего пользователя.
+        [HttpGet, Route("/modules/favorites/ids"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> GetFavoriteModuleIds(long userId)
+        {
+            try
+            {
+                // Проверяем правильность id.
+                if (userId < 0)
+                    return NotFound("Modules not found");
 
-               if (module == null)
-                   return StatusCode(500, "Failed to create the module.");
+                List<long> ids = await _repository.GetFavoriteModuleIds(userId);
 
-               module.Title = moduleData.Title;
-               module.Access = moduleData.Access;
+                return Ok(ids);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               UsersContext.DeleteCards(moduleData.Id);
-               UsersContext.AddCards(moduleData.Id, moduleData.Cards);
+        // Возвращает все избранные модули.
+        [HttpGet, Route("/modules/favorites"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> GetFavoriteModules(long userId)
+        {
+            try
+            {
+                // Проверяем правильность id.
+                if (userId < 0)
+                    return NotFound("Modules not found");
 
-               return Ok(moduleData.Id);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                List<long> ids = await _repository.GetFavoriteModuleIds(userId);
+                List<Module> modules = await _repository.GetModules(userId);
 
-       [HttpGet, Route("/module"), EnableCors("Local"), Authorize]
-       public IActionResult GetModule(int moduleId, int userId)
-       {
-           try
-           {
-               if (moduleId < 0 || userId < 0)
-                   return StatusCode(400, "Unacceptable id.");
+                // Собираем избранные модули.
+                List<Module> favorites = new List<Module>();
+                foreach(var module in modules)
+                {
+                    if (ids.Contains(module.Id))
+                    {
+                        favorites.Add(module);
+                    }
+                }
 
-               Module? module = UsersContext.GetModule(moduleId);
-               List<Card> cards = UsersContext.GetCards(moduleId);
+                return Ok(favorites);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               if (module == null)
-                   return Conflict("Module not found.");
+        // Добавляет/убирает модуль из списка избранных.
+        [HttpPut, Route("/modules/favorites/set"), EnableCors("Local"), Authorize]
+        public IActionResult SetFavoriteModules(int userId, int moduleId, bool value)
+        {
+            try
+            {
+                if (value)
+                    _repository.AddFavoriteModule(userId, moduleId);
+                else
+                    _repository.DeleteFavoriteModule(userId, moduleId);
 
-               var response = new
-               {
-                   title = module.Title,
-                   authorId = module.UserId,
-                   access = module.Access,
-                   cards
-               };
-               return Ok(response);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                return Ok();
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-       [HttpDelete, Route("/modules/delete"), EnableCors("Local"), Authorize]
-       public IActionResult DeleteModule(int id)
-       {
-           try
-           {
-               if (id < 0)
-                   return StatusCode(500, "Failed to delete the module.");
+        // Добавляет новый модуль.
+        [HttpPut, Route("/modules/add"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> AddModule(RequestedModuleData moduleData)
+        {
+            try
+            {
+                if (moduleData == null || moduleData.Cards == null || moduleData.UserId < 0)
+                    return StatusCode(500, "Failed to create the module.");
 
-               UsersContext.DeleteModule(id);
+                long moduleId = await _repository.AddModule(moduleData.UserId, moduleData);
 
-               return Ok();
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                return Ok(moduleId);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-       [HttpGet, Route("/modules/favorites"), EnableCors("Local"), Authorize]
-       public IActionResult GetFavoriteModules(int userId)
-       {
-           try
-           {
-               if (userId < 0)
-                   return NotFound("Modules not found");
+        // Обновляет данные модуля.
+        [HttpPut, Route("/modules/edit"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> UpdateModule(RequestedModuleData newModuleData)
+        {
+            try
+            {
+                if (newModuleData == null || newModuleData.Cards == null || newModuleData.UserId < 0 || newModuleData.Id < 0)
+                    return StatusCode(500, "Failed to update the module.");
 
-               List<FavoriteModule> favoriteModules = UsersContext.GetFavoriteModules(userId);
+                Module? module = await _repository.UpdateModule(newModuleData.Id, newModuleData);
 
-               List<Module> modules = new List<Module>();
+                if (module == null)
+                    return StatusCode(500, "Failed to update the module.");
 
-               foreach (FavoriteModule favoriteModule in favoriteModules)
-               {
-                   Module module = UsersContext.GetModule(favoriteModule.ModuleId);
+                return Ok(module.Id);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-                   if (module!= null && (module.Access == 1 || module.UserId == userId))
-                       modules.Add(module);
-               }
+        // Удаляет модуль со всеми карточками.
+        [HttpDelete, Route("/modules/delete"), EnableCors("Local"), Authorize]
+        public async Task<IActionResult> DeleteModule(int id)
+        {
+            try
+            {
+                if (id < 0)
+                    return StatusCode(500, "Failed to delete the module.");
 
-               return Ok(modules);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                await _repository.DeleteModule(id);
 
-       [HttpPut, Route("/modules/favorites/set"), EnableCors("Local"), Authorize]
-       public IActionResult SetFavoriteModules(int userId, int moduleId, bool value)
-       {
-           try
-           {
-               if (value)
-                   UsersContext.AddFavoriteModule(userId, moduleId);
-               else
-                   UsersContext.RemoveFavoriteModule(userId, moduleId);
+                return Ok();
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               return Ok();
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+        // Типы данных, получаемых с клиента.
+        public class RequestedModuleData
+        {
+            public long Id { get; set; }
+            public long UserId { get; set; }
+            public string Title { get; set; } = "";
+            public int Access { get; set; }
+            public List<RequestedCardData> Cards { get; set; } = new List<RequestedCardData>();
+        }
+        public class RequestedCardData
+        {
+            public long Id { get; set; }
+            public string? Term { get; set; } = "";
 
-       [HttpGet, Route("/activities"), EnableCors("Local"), Authorize]
-       public IActionResult GetActivities(int userId)
-       {
-           try
-           {
-               if (userId < 0)
-                   return NotFound("Activities not found");
+            public string? Definition { get; set; } = "";
+        }
+        
 
-               List<Activity> activities = UsersContext.GetActivities(userId);
+        /*[HttpGet, Route("/activities"), EnableCors("Local"), Authorize]
+        public IActionResult GetActivities(int userId)
+        {
+            try
+            {
+                if (userId < 0)
+                    return NotFound("Activities not found");
 
-               return Ok(activities);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                List<Activity> activities = UsersContext.GetActivities(userId);
 
-       [HttpGet, Route("/activities/get"), EnableCors("Local"), Authorize]
-       public IActionResult GetActivity(int userId, int year, int month, int day)
-       {
-           try
-           {
-               Activity? activity = UsersContext.GetActivity(userId, year, month, day);
+                return Ok(activities);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               if (activity == null)
-                   activity = UsersContext.AddActivity(userId, year, month, day, 0);
+        [HttpGet, Route("/activities/get"), EnableCors("Local"), Authorize]
+        public IActionResult GetActivity(int userId, int year, int month, int day)
+        {
+            try
+            {
+                Activity? activity = UsersContext.GetActivity(userId, year, month, day);
 
-               return Ok(activity);
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                if (activity == null)
+                    activity = UsersContext.AddActivity(userId, year, month, day, 0);
 
-       [HttpPut, Route("/activities/update"), EnableCors("Local"), Authorize]
-       public IActionResult UpdateActivities(int userId, int year, int month, int day, int studyTime)
-       {
-           try
-           {
-               if (userId < 0)
-                   return NotFound("Activities not found");
+                return Ok(activity);
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }
 
-               bool result = UsersContext.UpdateActivity(userId, year, month, day, studyTime);
+        [HttpPut, Route("/activities/update"), EnableCors("Local"), Authorize]
+        public IActionResult UpdateActivities(int userId, int year, int month, int day, int studyTime)
+        {
+            try
+            {
+                if (userId < 0)
+                    return NotFound("Activities not found");
 
-               if (!result)
-                   UsersContext.AddActivity(userId, year, month, day, studyTime);
+                bool result = UsersContext.UpdateActivity(userId, year, month, day, studyTime);
 
-               return Ok();
-           }
-           catch (Exception e) { return StatusCode(500, e.Message); }
-       }
+                if (!result)
+                    UsersContext.AddActivity(userId, year, month, day, studyTime);
 
-       public class AddModuleData : Module
-       {
-           public List<Card>? Cards { get; set; }
-       }*/
+                return Ok();
+            }
+            catch (Exception e) { return StatusCode(500, e.Message); }
+        }*/
     }
 }

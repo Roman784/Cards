@@ -10,6 +10,7 @@ export const MODULE = "https://localhost:7010/module";
 export const DELETE_MODULE = "https://localhost:7010/modules/delete";
 export const EDIT_MODULE = "https://localhost:7010/modules/edit";
 export const ADD_MODULE = "https://localhost:7010/modules/add";
+export const FAVORITE_MODULE_IDS = "https://localhost:7010/modules/favorites/ids";
 export const FAVORITE_MODULES = "https://localhost:7010/modules/favorites";
 export const SET_FAVORITE_MODULES = "https://localhost:7010/modules/favorites/set";
 export const ACTIVITIES = "https://localhost:7010/activities";
@@ -103,8 +104,8 @@ export async function addModule(title: string, access: number, cards: CardType[]
     });
 }
 
-export async function getFavoriteModules(user: UserType) {
-    const request = FAVORITE_MODULES + "?userId=" + user.id;
+export async function getFavoriteModuleIds(user: UserType) {
+    const request = FAVORITE_MODULE_IDS + "?userId=" + user.id;
     return await axios.get(request, {
         headers: {
             Accept: "application/json",
