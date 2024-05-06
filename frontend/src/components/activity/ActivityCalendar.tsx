@@ -16,16 +16,20 @@ export default function ActivityCalendar({activities}: {activities : ActivityTyp
   const daysOfWeek: string[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
   useEffect(() => {
+    loadActivities();
+  }, [])
+
+  async function loadActivities() {
     // Находим число строк у таблицы.
     let rows: number = 1;
-    activities.forEach(activity => {
+    await activities.forEach(activity => {
       const dayNumber: number = getDayNumber(activity)
       if (dayNumber === 1)
         rows += 1;
     });
     if (getDayNumber(activities[0]) === 1 || getDayNumber(activities[activities.length - 1]) === 1)
       rows -= 1;
-
+    
     let tempCalendar: any = [];
 
     // Заполняем матрицу null значениями.
@@ -37,16 +41,16 @@ export default function ActivityCalendar({activities}: {activities : ActivityTyp
     }
 
     // Заполяем календарь данными о времени активности.
-    activities.forEach((activity, index) => {
+    await activities.forEach((activity, index) => {
       let day: number = getDayNumber(activity) - 1;
       if (day < 0) day = 6;
       const row: number = Math.floor((day + index) / 7);
-      
+
       tempCalendar[row][day] = activity.studyTime;
     });
 
     setCalendar(tempCalendar);
-  }, [])
+  }
 
   // Возвращает номер дня в недели.
   function getDayNumber(activity: ActivityType) {

@@ -44,7 +44,7 @@ namespace backend.Repositories
                           select module.ModuleId).ToListAsync();
         }
 
-        public void AddFavoriteModule(long userId, long moduleId)
+        public async Task AddFavoriteModule(long userId, long moduleId)
         {
             FavoriteModule module = new FavoriteModule()
             {
@@ -52,18 +52,19 @@ namespace backend.Repositories
                 ModuleId = moduleId
             };
 
-            DbContext.Add(module);
-            DbContext.SaveChanges();
+            await DbContext.AddAsync(module);
+            await DbContext.SaveChangesAsync();
         }
 
-        public void DeleteFavoriteModule(long userId, long moduleId)
+        public async Task DeleteFavoriteModule(long userId, long moduleId)
         {
-            FavoriteModule? module = DbContext.FavoriteModules.FirstOrDefault(m => m.UserId == userId && m.ModuleId == moduleId);
+            FavoriteModule? module = await DbContext.FavoriteModules.FirstOrDefaultAsync(m => 
+                                            m.UserId == userId && m.ModuleId == moduleId);
 
             if (module == null) return;
 
             DbContext.FavoriteModules.Remove(module);
-            DbContext.SaveChanges();
+            await DbContext.SaveChangesAsync();
         }
 
         public async Task<long> AddModule(long userId, RequestedModuleData moduleData)
