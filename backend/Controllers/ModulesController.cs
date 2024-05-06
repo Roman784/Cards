@@ -191,7 +191,7 @@ namespace backend.Controllers
 
         // Удаляет модуль со всеми карточками.
         [HttpDelete, Route("/modules/delete"), EnableCors("Local"), Authorize]
-        public async Task<IActionResult> DeleteModule(int id)
+        public async Task<IActionResult> DeleteModule(long id)
         {
             try
             {

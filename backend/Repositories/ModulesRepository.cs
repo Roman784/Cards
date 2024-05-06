@@ -131,11 +131,11 @@ namespace backend.Repositories
         public async Task DeleteModule(long id)
         {
             Module? module = await GetModule(id);
-            FavoriteModule? favoriteModule = await DbContext.FavoriteModules.FirstOrDefaultAsync(m => m.ModuleId == id);
+            //FavoriteModule? favoriteModule = await DbContext.FavoriteModules.FirstOrDefaultAsync(m => m.ModuleId == id);
 
-            if (module == null || favoriteModule == null) return;
+            if (module == null) return;
 
-            // Удаляем данные.
+            // Удаляем карточки данные.
             foreach(var card in DbContext.Cards) 
             {
                 if (card.ModuleId == id)
@@ -143,7 +143,18 @@ namespace backend.Repositories
                     DbContext.Cards.Remove(card);
                 }
             }
-            DbContext.FavoriteModules.Remove(favoriteModule);
+            
+            // Удаляем модуль из избранных.
+            foreach(var favoriteModule in DbContext.FavoriteModules)
+            {
+                if (favoriteModule.ModuleId == id) 
+                {
+                    DbContext.FavoriteModules.Remove(favoriteModule);
+                }
+            }
+            //if (favoriteModule != null)
+                //DbContext.FavoriteModules.Remove(favoriteModule);
+            // Удаляем сам модуль.
             DbContext.Modules.Remove(module);
 
             await DbContext.SaveChangesAsync();
