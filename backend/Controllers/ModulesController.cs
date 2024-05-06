@@ -140,14 +140,14 @@ namespace backend.Controllers
 
         // Добавляет/убирает модуль из списка избранных.
         [HttpPut, Route("/modules/favorites/set"), EnableCors("Local"), Authorize]
-        public IActionResult SetFavoriteModules(int userId, int moduleId, bool value)
+        public async Task<IActionResult> SetFavoriteModules(int userId, int moduleId, bool value)
         {
             try
             {
                 if (value)
-                    _repository.AddFavoriteModule(userId, moduleId);
+                    await _repository.AddFavoriteModule(userId, moduleId);
                 else
-                    _repository.DeleteFavoriteModule(userId, moduleId);
+                    await _repository.DeleteFavoriteModule(userId, moduleId);
 
                 return Ok();
             }
