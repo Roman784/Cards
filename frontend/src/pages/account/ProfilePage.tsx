@@ -4,7 +4,7 @@ import { logOut } from "../../store/userSlice";
 import { useNavigate } from 'react-router-dom';
 import { getActivities } from '../../api/requests';
 
-import UserType from '../../Types/UserType';
+import IUser from '../../types/IUser';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
@@ -21,7 +21,7 @@ interface ActivityType {
 export default function ProfilePage() {
   const [activities, setActivities] = useState<ActivityType[]>([]);
 
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 

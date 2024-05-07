@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useSelector } from 'react-redux';
 
-import UserType from '../../Types/UserType';
-import CardType from "../../Types/CardType";
+import IUser from '../../types/IUser';
+import ICard from "../../types/ICard";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
@@ -10,11 +10,11 @@ import StudyCard from "./StudyCard";
 import "./StudyModule.css"
 import { getActivity, updateActivity } from "../../api/requests";
 
-export default function StudyModule({cards}: {cards: CardType[]}) {
+export default function StudyModule({cards}: {cards: ICard[]}) {
   const [cardIndex, setCardIndex] = useState<number>(0);
   const [isCardFlipped, setIsCardFlipped] = useState<boolean>(false);
 
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
 
   let studyTime: number = 0;
 

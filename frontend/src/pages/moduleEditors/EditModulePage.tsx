@@ -3,17 +3,18 @@ import { addCard, setTitle, setAccess, reset } from '../../store/editableModuleS
 import { useLocation, useNavigate } from 'react-router-dom';
 import { editModule, getModule } from '../../api/requests';
 
-import UserType from '../../Types/UserType';
-import CardType from '../../Types/CardType';
+import IUser from '../../types/IUser';
+import ICard from '../../types/ICard';
+
 import ModuleEditor from '../../components/module/ModuleEditor';
 
 export default function EditModulePage() {
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const navigate = useNavigate();
 
   const title = useSelector<any, string>(state => state.editableModule.title);
   const access = useSelector<any, number>(state => state.editableModule.access);
-  const cards = useSelector<any, CardType[]>(state => state.editableModule.cards);
+  const cards = useSelector<any, ICard[]>(state => state.editableModule.cards);
 
   const dispatch = useDispatch<any>();
   const location = useLocation();
@@ -25,7 +26,7 @@ export default function EditModulePage() {
 
     getModule(moduleId, user)
     .then((response) => {
-      response.data.cards.forEach((card: CardType) => {
+      response.data.cards.forEach((card: ICard) => {
         dispatch(addCard({
           id: card.id,
           term: card.term,

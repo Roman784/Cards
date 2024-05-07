@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addCard, setTitle, setAccess } from '../../store/editableModuleSlice';
 import { useNavigate } from 'react-router-dom';
 
-import UserType from '../../Types/UserType';
-import CardType from '../../Types/CardType';
+import IUser from '../../types/IUser';
+import ICard from '../../types/ICard';
 
 import { EditableCard } from '../cards/EditableCard';
 import "./Module.css";
@@ -17,12 +17,12 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 export default function ModuleEditor({loadModule, saveModule}: {loadModule: any, saveModule: any}) {
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const navigate = useNavigate();
 
   const title = useSelector<any, string>(state => state.editableModule.title);
   const access = useSelector<any, number>(state => state.editableModule.access);
-  const cards = useSelector<any, CardType[]>(state => state.editableModule.cards);
+  const cards = useSelector<any, ICard[]>(state => state.editableModule.cards);
 
   const dispatch = useDispatch<any>();
 

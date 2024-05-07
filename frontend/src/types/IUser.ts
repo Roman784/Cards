@@ -1,4 +1,4 @@
-export default interface UserType {
+export default interface IUser {
     isLogin: boolean;
     id: number;
     name: string;

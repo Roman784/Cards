@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import UserType from "../Types/UserType";
+import IUser from "../types/IUser";
 
-const initialState = <UserType>{
+const initialState = <IUser>{
     isLogin: false,
     id: -1,
     name: "",

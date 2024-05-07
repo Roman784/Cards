@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getModule, deleteModule, setFavoriteModules } from "../../api/requests";
 
-import CardType from "../../Types/CardType";
-import UserType from "../../Types/UserType";
+import IUser from "../../types/IUser";
+import ICard from "../../types/ICard";
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
@@ -17,10 +17,10 @@ export default function ModulePage() {
   const [title, setTitle] = useState<string>("");
   const [isFavorite, setIsFavorite] = useState<boolean>(false);
   const [authorId, setAuthorId] = useState<number>(-1);
-  const [cards, setCards] = useState<CardType[]>([]);
+  const [cards, setCards] = useState<ICard[]>([]);
   const [isStudy, setIsStudy] = useState<boolean>(false);
 
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,8 +39,8 @@ export default function ModulePage() {
     getModule(moduleId, user)
     .then((response) => {
       // Заполняем временный список карточек.
-      let tempCards: CardType[] = [];
-      response.data.cards.forEach((card: CardType) => {
+      let tempCards: ICard[] = [];
+      response.data.cards.forEach((card: ICard) => {
         tempCards.push({
           id: card.id,
           term: card.term,
@@ -119,7 +119,7 @@ export default function ModulePage() {
           <Button className="study-btn" variant="primary" onClick={() => setIsStudy(true)}>Study</Button>
 
           {cards.length > 0 && 
-          cards.map((card: CardType) => (
+          cards.map((card: ICard) => (
             <DemonstrationCard key={card.id} term={card.term} definition={card.definition} />
           ))}
         </div>

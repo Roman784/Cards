@@ -2,18 +2,18 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import UserType from "../../Types/UserType";
+import IUser from "../../types/IUser";
+import IModuleFace from "../../types/IModuleFace";
 
 import DemonstrationModuleCard from "./DemonstrationModuleCard";
-import ModuleFaceType from "../../Types/ModuleFaceType";
 import { getFavoriteModuleIds, getModules } from "../../api/requests";
 import Snipper from "../snipper/Spinner";
 
 export default function ModuleList({requestUrl} : {requestUrl: string}) {
-  const [modules, setModules] = useState<ModuleFaceType[]>([]);
+  const [modules, setModules] = useState<IModuleFace[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,8 +40,8 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
     await getModules(requestUrl, user)
     .then((response) => {
       // Заполняем временный список модулей.
-      let tempModules: ModuleFaceType[] = []; 
-      response.data.forEach((module: ModuleFaceType) => {
+      let tempModules: IModuleFace[] = []; 
+      response.data.forEach((module: IModuleFace) => {
         tempModules.push({
           id: module.id,
           title: module.title,
@@ -50,7 +50,7 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
       });
 
       setModules(tempModules);
-      
+
       setIsLoading(false);
     });
   }
@@ -60,7 +60,7 @@ export default function ModuleList({requestUrl} : {requestUrl: string}) {
       {isLoading && <Snipper />}
 
       {!isLoading && 
-        <>{modules.length > 0 && modules.map((module: ModuleFaceType, index) => (
+        <>{modules.length > 0 && modules.map((module: IModuleFace, index) => (
           <DemonstrationModuleCard key={index} id={module.id} title={module.title} isFavoriteModule={module.isFavorite} />
         ))}
       </>}

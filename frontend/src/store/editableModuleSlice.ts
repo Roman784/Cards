@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import CardType from "../Types/CardType";
+import ICard from "../types/ICard";
 
 const initialState = {
     title: <string>"",
     access: <number>0,
-    cards: <CardType[]>[]
+    cards: <ICard[]>[]
 }
 
 const editableModuleSlice = createSlice({

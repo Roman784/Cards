@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { setFavoriteModules } from '../../api/requests';
 import { useSelector } from 'react-redux';
-import UserType from '../../Types/UserType';
+import IUser from '../../types/IUser';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Card from 'react-bootstrap/Card';
@@ -12,7 +12,7 @@ import "./Module.css"
 export default function DemonstrationModuleCard({id, title, isFavoriteModule}: {id: number, title: string, isFavoriteModule: boolean}) {
   const [isFavorite, setIsFavorite] = useState<boolean>(isFavoriteModule);
 
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const navigate = useNavigate();
 
   const handleIsFavoriteChange = (event: any) => {

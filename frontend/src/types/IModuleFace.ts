@@ -1,4 +1,4 @@
-export default interface ModuleFaceType {
+export default interface IModuleFace {
     id: number;
     title: string;
     isFavorite: boolean;

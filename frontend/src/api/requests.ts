@@ -1,6 +1,6 @@
 import axios from 'axios';
-import UserType from '../Types/UserType';
-import CardType from '../Types/CardType';
+import IUser from '../types/IUser';
+import ICard from '../types/ICard';
 
 export const LOGIN = "https://localhost:7010/login";
 export const SIGUP = "https://localhost:7010/signup";
@@ -43,7 +43,7 @@ export async function sigup(name: string, password: string) {
     })
 }
 
-export async function getModules(url: string, user: UserType) {
+export async function getModules(url: string, user: IUser) {
     const request = url + "?userId=" + user.id.toString();
     return await axios.get(request, {
         headers: {
@@ -53,7 +53,7 @@ export async function getModules(url: string, user: UserType) {
     })
 }
 
-export async function getModule(id: number, user: UserType) {
+export async function getModule(id: number, user: IUser) {
     const request = MODULE + "?moduleId=" + id.toString() + "&userId=" + user.id.toString();
     return await axios.get(request, {
         headers: {
@@ -63,7 +63,7 @@ export async function getModule(id: number, user: UserType) {
     })
 }
 
-export async function deleteModule(id: number, user: UserType) {
+export async function deleteModule(id: number, user: IUser) {
     const request = DELETE_MODULE + "?id=" + id;
     return await axios.delete(request, {
         headers: {
@@ -73,7 +73,7 @@ export async function deleteModule(id: number, user: UserType) {
     });
 }
 
-export async function editModule(moduleId: number, title: string, access: number, cards: CardType[], user: UserType) {
+export async function editModule(moduleId: number, title: string, access: number, cards: ICard[], user: IUser) {
     return await axios.put(EDIT_MODULE, {
         id: moduleId,
         userId: user.id,
@@ -89,7 +89,7 @@ export async function editModule(moduleId: number, title: string, access: number
     });
 }
 
-export async function addModule(title: string, access: number, cards: CardType[], user: UserType) {
+export async function addModule(title: string, access: number, cards: ICard[], user: IUser) {
     return await axios.post(ADD_MODULE, {
         userId: user.id,
         title: title,
@@ -104,7 +104,7 @@ export async function addModule(title: string, access: number, cards: CardType[]
     });
 }
 
-export async function getFavoriteModuleIds(user: UserType) {
+export async function getFavoriteModuleIds(user: IUser) {
     const request = FAVORITE_MODULE_IDS + "?userId=" + user.id;
     return await axios.get(request, {
         headers: {
@@ -114,7 +114,7 @@ export async function getFavoriteModuleIds(user: UserType) {
     });
 }
 
-export async function setFavoriteModules(user: UserType, moduleId: number, value: boolean) {
+export async function setFavoriteModules(user: IUser, moduleId: number, value: boolean) {
     const request = SET_FAVORITE_MODULES + "?userId=" + user.id + "&moduleId=" + moduleId + "&value=" + value;
     return await axios.put(request, {}, {
         headers: {
@@ -124,7 +124,7 @@ export async function setFavoriteModules(user: UserType, moduleId: number, value
     });
 }
 
-export async function getActivities(user: UserType) {
+export async function getActivities(user: IUser) {
     const request = ACTIVITIES + "?userId=" + user.id;
     return await axios.get(request, {
         headers: {
@@ -134,7 +134,7 @@ export async function getActivities(user: UserType) {
     });
 }
 
-export async function getActivity(user: UserType, year: number, month: number, day: number) {
+export async function getActivity(user: IUser, year: number, month: number, day: number) {
     const request = GET_ACTIVITY + "?userId=" + user.id + "&year=" + year + "&month=" + month + "&day=" + day
     return await axios.get(request, {
         headers: {
@@ -144,7 +144,7 @@ export async function getActivity(user: UserType, year: number, month: number, d
     });
 }
 
-export async function updateActivity(user: UserType, year: number, month: number, day: number, studyTime: number) {
+export async function updateActivity(user: IUser, year: number, month: number, day: number, studyTime: number) {
     const request = UPDATE_ACTIVITY + "?userId=" + user.id + "&year=" + year + "&month=" + month + "&day=" + day + "&studyTime=" + studyTime;
     return await axios.put(request, {}, {
         headers: {

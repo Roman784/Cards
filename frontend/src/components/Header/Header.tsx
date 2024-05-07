@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../store/userSlice";
 
-import UserType from "../../Types/UserType";
+import IUser from "../../types/IUser";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
@@ -13,7 +13,7 @@ import logo from "/logo.svg"
 import "./Header.css";
 
 export default function Header() {
-  const user = useSelector<any, UserType>(state => state.user);
+  const user = useSelector<any, IUser>(state => state.user);
   const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
